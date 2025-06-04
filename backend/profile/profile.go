@@ -52,7 +52,7 @@ type Comments struct {
 }
 
 func GetUserInfo(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -168,7 +168,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePrivacy(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -289,7 +289,7 @@ func GetFollowingUsernames(userID string) ([]string, error) {
 }
 
 func IsFollowing(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -362,7 +362,7 @@ func IsAcceptedFollower(viewerID, ownerID string) (bool, error) {
 
 // In getposts.go
 func GetOwnPosts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -453,7 +453,7 @@ ORDER BY p.creation_date DESC
 }
 
 func GetFollowersAndFollowing(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -544,7 +544,7 @@ func GetFollowersAndFollowing(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetFollowersAndFollowingPosts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -633,7 +633,7 @@ func GetFollowersAndFollowingPosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func CheckMyPrivacy(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -659,7 +659,7 @@ func CheckMyPrivacy(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetInvitationsFollow(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -717,7 +717,7 @@ func GetInvitationsFollow(w http.ResponseWriter, r *http.Request) {
 }
 
 func AcceptInvitation(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")

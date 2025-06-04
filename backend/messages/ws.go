@@ -142,10 +142,10 @@ func saveMessageToDB(sender string, receiver string, message string, typee strin
 }
 
 func GetMessages(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app") // Allow your frontend's origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                                                           // Allow credentials (cookies)
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                                                 // Allowed methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")                                        //
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app") // Allow your frontend's origin
+	w.Header().Set("Access-Control-Allow-Credentials", "true")                              // Allow credentials (cookies)
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                    // Allowed methods
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")           //
 
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK) // Respond with 200 OK for preflight request

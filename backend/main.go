@@ -29,7 +29,7 @@ func main() {
 	// Get frontend URL from environment variable or use default
 	frontendURL := os.Getenv("FRONTEND_URL")
 	if frontendURL == "" {
-		frontendURL = "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app"
+		frontendURL = "https://frontend-social-net.vercel.app"
 	}
 
 	fs := http.FileServer(http.Dir("static"))

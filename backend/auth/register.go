@@ -21,7 +21,7 @@ import (
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
