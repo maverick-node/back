@@ -1,0 +1,10 @@
+*.db
+*.log
+go sum
+*.json
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+node_modules

@@ -1,0 +1,218 @@
+ERROR: 2025/06/04 11:15:57 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:03 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:09 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:12 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:12 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:12 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:16:24 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:30 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:16:31 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:31 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:31 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:16:33 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:33 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:16:35 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:39 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:43 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:46 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:16:47 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:16:47 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:17:02 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:17:03 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:17:04 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:17:04 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:17:04 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:17:05 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:17:05 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:17:07 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:17:08 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:17:08 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:17:10 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:17:10 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:17:10 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:17:11 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:17:11 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:17:11 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:17:17 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:17:17 logger.go:23: Unauthorized access to post: user 01973a71-38e8-7fbf-9c56-aec2ad0fd5ab not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:20:39 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:20:39 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:20:39 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:21:12 logger.go:23: Missing required fields: <nil>
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:30:37 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:35:59 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:35:59 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:35:59 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:35:59 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:35:59 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:35:59 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:35:59 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:36:13 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:36:27 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:36:27 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:36:27 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:36:42 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:36:42 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:36:42 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:36:42 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:37:11 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:37:11 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:37:11 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:37:11 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:37:11 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:37:11 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:37:11 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:37:16 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:37:17 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:37:20 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:37:20 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:37:20 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:13 logger.go:23: Error reading message: websocket: close 1006 (abnormal closure): unexpected EOF
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58683: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58684: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58687: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58689: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58691: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58695: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58697: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58699: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58704: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58708: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58710: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:58716: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:56903: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59084: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59149: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59160: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59162: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59166: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59168: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59170: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59172: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59184: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59186: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59074: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59148: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59150: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59163: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59165: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59167: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59169: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59171: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59183: write: broken pipe
+ERROR: 2025/06/04 11:38:14 logger.go:23: Error sending online/offline users list: write tcp [::1]:8080->[::1]:59185: write: broken pipe
+ERROR: 2025/06/04 11:39:46 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:40:26 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:41:59 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:41:59 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:42:01 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:42:11 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:42:17 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:42:39 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:42:39 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:42:39 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:43:13 logger.go:23: Unauthorized: Missing token: http: named cookie not present
+ERROR: 2025/06/04 11:43:33 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:43:33 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:43:33 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:43:39 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:44:02 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:44:04 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:44:19 logger.go:23: Unauthorized access to post: user 01973a8a-8a66-7fc6-84f9-0d3842e6ed5b not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:44:19 logger.go:23: Unauthorized access to post: user 01973a8a-8a66-7fc6-84f9-0d3842e6ed5b not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:47:25 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:47:25 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:47:25 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:47:25 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:47:25 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:47:25 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:47:26 logger.go:23: Unauthorized access to post: user 01973a8a-8a66-7fc6-84f9-0d3842e6ed5b not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:47:26 logger.go:23: Unauthorized access to post: user 01973a8a-8a66-7fc6-84f9-0d3842e6ed5b not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:47:51 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:47:51 logger.go:23: Unauthorized access to post: user 01973a8a-8a66-7fc6-84f9-0d3842e6ed5b not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:47:51 logger.go:23: Unauthorized access to post: user 01973a8a-8a66-7fc6-84f9-0d3842e6ed5b not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:49:04 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:49:05 logger.go:23: Unauthorized access to post: user 01973a8a-8a66-7fc6-84f9-0d3842e6ed5b not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:49:05 logger.go:23: Unauthorized access to post: user 01973a8a-8a66-7fc6-84f9-0d3842e6ed5b not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:49:24 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:49:24 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:49:24 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:49:29 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:49:46 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:00 logger.go:23: Unauthorized access to post: user 01973a8f-8089-7fc7-9242-1e1a07bd7b1e not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:50:00 logger.go:23: Unauthorized access to post: user 01973a8f-8089-7fc7-9242-1e1a07bd7b1e not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:50:13 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:15 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:15 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:15 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:50:24 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:30 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:53 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:56 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:50:56 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:50:57 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:57 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:50:57 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:50:57 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:50:57 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:51:22 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:51:22 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:51:35 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:51:35 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:58:13 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:58:13 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 11:58:13 logger.go:23: Error sending online/offline users list: websocket: close sent
+ERROR: 2025/06/04 11:58:13 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
+ERROR: 2025/06/04 11:58:13 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
+ERROR: 2025/06/04 11:59:08 logger.go:23: Error reading message: websocket: close 1001 (going away)
