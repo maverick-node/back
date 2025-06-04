@@ -27,10 +27,10 @@ type Comments struct {
 }
 
 func AddComments(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-napk-e1g7awkjb-mavs-projects-a7e88004.vercel.app") // Allow frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                                                                // Allow cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                                                      // Allow methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")                                             // Allow headers
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app") // Allow frontend origin
+	w.Header().Set("Access-Control-Allow-Credentials", "true")                                                           // Allow cookies
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                                                 // Allow methods
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")                                        // Allow headers
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return
@@ -186,10 +186,10 @@ func CheckPostExists(postid string) bool {
 }
 
 func Getcomments(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-napk-e1g7awkjb-mavs-projects-a7e88004.vercel.app") // Allow frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                                                                // Allow cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                                                      // Allow methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")                                             // Allow headers
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app") // Allow frontend origin
+	w.Header().Set("Access-Control-Allow-Credentials", "true")                                                           // Allow cookies
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                                                 // Allow methods
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")                                        // Allow headers
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK) // Respond with 200 OK for preflight request
 		return

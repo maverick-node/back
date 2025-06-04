@@ -21,7 +21,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 		CheckOrigin: func(r *http.Request) bool {
-			return r.Header.Get("Origin") == "https://frontend-social-napk-e1g7awkjb-mavs-projects-a7e88004.vercel.app"
+			return r.Header.Get("Origin") == "https://frontend-social-rkwk3x6aq-mavs-projects-a7e88004.vercel.app"
 		},
 	}
 

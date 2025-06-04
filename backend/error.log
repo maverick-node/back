@@ -216,3 +216,4 @@ ERROR: 2025/06/04 11:58:13 logger.go:23: Error sending online/offline users list
 ERROR: 2025/06/04 11:58:13 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a71-bd7e-7fc0-9b96-d8dadd3d819d
 ERROR: 2025/06/04 11:58:13 logger.go:23: Unauthorized access to post: user 01973a90-71ca-7fc9-a390-52b2f69d42e5 not allowed to access post 01973a70-ed58-7fbf-859c-4d8f93124370
 ERROR: 2025/06/04 11:59:08 logger.go:23: Error reading message: websocket: close 1001 (going away)
+ERROR: 2025/06/04 13:20:38 logger.go:23: Error reading message: websocket: close 1001 (going away)
