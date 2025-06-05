@@ -57,8 +57,8 @@ func Users(w http.ResponseWriter, r *http.Request) {
 				ELSE 0 
 			END as followed
 		FROM users u
-		LEFT JOIN Followers f ON f.followed_id = u.id AND f.follower_id = (SELECT id FROM users WHERE username = ?)
-		WHERE u.username != ?`
+		LEFT JOIN Followers f ON f.followed_id = u.id AND f.follower_id = (SELECT id FROM users WHERE username = $1)
+		WHERE u.username != $2`
 
 	rows, err := db.DB.Query(query, username, username)
 	if err != nil {

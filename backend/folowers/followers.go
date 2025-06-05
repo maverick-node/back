@@ -80,7 +80,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 		}
 		status := "pending"
 
-		roww := db.DB.QueryRow(`SELECT privacy FROM users WHERE id = ?`, followedID)
+		roww := db.DB.QueryRow(`SELECT privacy FROM users WHERE id = $1`, followedID)
 		var privacy string
 		err = roww.Scan(&privacy)
 		if err != nil {
@@ -88,7 +88,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error getting privacy", http.StatusInternalServerError)
 			return
 		}
-		getFUllNameQuery := `SELECT first_name, last_name FROM users WHERE id = ?`
+		getFUllNameQuery := `SELECT first_name, last_name FROM users WHERE id = $1`
 		var firstName, lastName string
 		err = db.DB.QueryRow(getFUllNameQuery, followerID).Scan(&firstName, &lastName)
 		if err != nil {
@@ -107,7 +107,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 		}
 		// Check if the follow request already exists
 		var exists bool
-		err = db.DB.QueryRow(`SELECT EXISTS(SELECT 1 FROM Followers WHERE follower_id = ? AND followed_id = ?)`, followerID, followedID).Scan(&exists)
+		err = db.DB.QueryRow(`SELECT EXISTS(SELECT 1 FROM Followers WHERE follower_id = $1 AND followed_id = $2)`, followerID, followedID).Scan(&exists)
 		if err != nil {
 			http.Error(w, "Error checking follow request", http.StatusInternalServerError)
 			return
@@ -121,7 +121,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error generating follow ID", http.StatusInternalServerError)
 			return
 		}
-		_, err := db.DB.Exec(`INSERT INTO Followers (id,follower_id, followed_id, status) VALUES (?,?, ?, ?)`, followID, followerID, followedID, status)
+		_, err := db.DB.Exec(`INSERT INTO Followers (id,follower_id, followed_id, status) VALUES ($1,$2, $3, $4)`, followID, followerID, followedID, status)
 		if err != nil {
 			logger.LogError("Error following user", err)
 			http.Error(w, "Error following user", http.StatusInternalServerError)
@@ -136,7 +136,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 		}
 		// Check if the follow request exists
 		var exists bool
-		err = db.DB.QueryRow(`SELECT EXISTS(SELECT 1 FROM Followers WHERE follower_id = ? AND followed_id = ?)`, followerID, followedID).Scan(&exists)
+		err = db.DB.QueryRow(`SELECT EXISTS(SELECT 1 FROM Followers WHERE follower_id = $1 AND followed_id = $2)`, followerID, followedID).Scan(&exists)
 		if err != nil {
 			http.Error(w, "Error checking follow request", http.StatusInternalServerError)
 			return
@@ -145,7 +145,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "You are not following this user", http.StatusBadRequest)
 			return
 		}
-		_, err := db.DB.Exec(`DELETE FROM Followers WHERE follower_id = ? AND followed_id = ?`, followerID, followedID)
+		_, err := db.DB.Exec(`DELETE FROM Followers WHERE follower_id = $1 AND followed_id = $2`, followerID, followedID)
 		if err != nil {
 			logger.LogError("Error unfollowing user", err)
 			http.Error(w, "Error unfollowing user", http.StatusInternalServerError)
@@ -159,7 +159,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 		err := db.DB.QueryRow(`
 			SELECT EXISTS(
 				SELECT 1 FROM Followers 
-				WHERE follower_id = ? AND followed_id = ? 
+				WHERE follower_id = $1 AND followed_id = $2 
 			)`, followerID, followedID).Scan(&exists)
 		if err != nil {
 			logger.LogError("Error checking follow status", err)
@@ -171,7 +171,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 			Status      string `json:"status"`
 		}
 		var status string
-		err1 := db.DB.QueryRow(`SELECT status FROM Followers WHERE follower_id = ? AND followed_id = ?`, followerID, followedID).Scan(&status)
+		err1 := db.DB.QueryRow(`SELECT status FROM Followers WHERE follower_id = $1 AND followed_id = $2`, followerID, followedID).Scan(&status)
 		if err1 == sql.ErrNoRows {
 			json.NewEncoder(w).Encode(isFollowing{IsFollowing: false, Status: ""})
 			return
@@ -182,7 +182,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(isFollowing{IsFollowing: true, Status: status})
 
 	case "getFollowing":
-		rows, err := db.DB.Query(`SELECT followed_id FROM Followers WHERE follower_id = ? AND status = "accepted" `, followerID)
+		rows, err := db.DB.Query(`SELECT followed_id FROM Followers WHERE follower_id = $1 AND status = 'accepted'`, followerID)
 		if err != nil {
 			logger.LogError("Error getting following list", err)
 			http.Error(w, "Error getting following list", http.StatusInternalServerError)
@@ -203,7 +203,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 
 	case "followersCount":
 		var count int
-		err := db.DB.QueryRow(`SELECT COUNT(*) FROM Followers WHERE followed_id = ? AND status = "accepted"`, followedID).Scan(&count)
+		err := db.DB.QueryRow(`SELECT COUNT(*) FROM Followers WHERE followed_id = $1 AND status = 'accepted'`, followedID).Scan(&count)
 		if err != nil {
 			logger.LogError("Error getting followers count", err)
 			http.Error(w, "Error getting followers count", http.StatusInternalServerError)
@@ -213,7 +213,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 
 	case "followingCount":
 		var count int
-		err := db.DB.QueryRow(`SELECT COUNT(*) FROM Followers WHERE follower_id = ? AND status = "accepted"`, followedID).Scan(&count)
+		err := db.DB.QueryRow(`SELECT COUNT(*) FROM Followers WHERE follower_id = $1 AND status = 'accepted'`, followedID).Scan(&count)
 		if err != nil {
 			logger.LogError("Error getting following count", err)
 			http.Error(w, "Error getting following count", http.StatusInternalServerError)
@@ -224,7 +224,7 @@ func SendJSON(w http.ResponseWriter, r *http.Request) {
 	case "rejectInvitation":
 
 		// Delete the pending follow request
-		_, err := db.DB.Exec(`DELETE FROM Followers WHERE follower_id = ? AND followed_id = ? `, followedID, followerID)
+		_, err := db.DB.Exec(`DELETE FROM Followers WHERE follower_id = $1 AND followed_id = $2`, followedID, followerID)
 		if err != nil {
 			logger.LogError("Error rejecting invitation", err)
 			http.Error(w, "Error rejecting invitation", http.StatusInternalServerError)

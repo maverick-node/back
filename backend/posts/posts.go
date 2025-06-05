@@ -172,7 +172,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			postID = uuidV7.String()
-			_, err = db.DB.Exec("INSERT INTO posts (id, title, content, user_id, author, creation_date, status,image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			_, err = db.DB.Exec("INSERT INTO posts (id, title, content, user_id, author, creation_date, status,image) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
 				postID, post.Title, post.Content, userid, author, time.Now(), post.Status, post.Image)
 			if err != nil {
 				fmt.Println("Error inserting post:", err)
@@ -184,7 +184,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			var userSlice []string
 			fmt.Println("", post.AllowedUsers)
 			for _, user := range strings.Split(post.AllowedUsers, ",") {
-				fmt.Println("Hello Motherfucker: ", user)
 				sessionid, err := session.GetUserIDFromUsername(strings.TrimSpace(user))
 				if err != nil {
 					auth.Senddata(w, 2, "User not found", 400)
@@ -199,7 +198,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			for _, user := range userSlice {
 				postID, _ := uuid.NewV7()
 
-				_, err = db.DB.Exec("INSERT INTO posts (id, title, content, user_id, author, creation_date, status,image) VALUES (?,?,?,?,?,?,?,?)",
+				_, err = db.DB.Exec("INSERT INTO posts (id, title, content, user_id, author, creation_date, status,image) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
 					postID, post.Title, post.Content, userid, author, time.Now(), post.Status, post.Image)
 				if err != nil {
 					http.Error(w, fmt.Sprintf("Error inserting post: %v", err), http.StatusInternalServerError)
@@ -207,7 +206,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 				}
 				privacyID, _ := uuid.NewV7()
 
-				_, err = db.DB.Exec("INSERT INTO postsPrivacy (id,post_id, user_id) VALUES (?,?, ?)",
+				_, err = db.DB.Exec("INSERT INTO posts_privacy (id, post_id, user_id) VALUES ($1, $2, $3)",
 					privacyID, postID, user)
 				if err != nil {
 					http.Error(w, fmt.Sprintf("Error inserting post privacy: %v", err), http.StatusInternalServerError)

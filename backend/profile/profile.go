@@ -81,7 +81,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 
 	// First, get the user's ID from the username
 	var userID string
-	err1 := db.DB.QueryRow("SELECT id FROM users WHERE username = ?", username).Scan(&userID)
+	err1 := db.DB.QueryRow("SELECT id FROM users WHERE username = $1", username).Scan(&userID)
 	if err1 != nil {
 		if err1 == sql.ErrNoRows {
 			fmt.Println("No user found with the given username")
@@ -94,7 +94,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userInfo UserInfo
-	err = db.DB.QueryRow("SELECT username, email, first_name, last_name, bio, date_of_birth, privacy, avatar, nickname FROM users WHERE id = ?", userID).Scan(
+	err = db.DB.QueryRow("SELECT username, email, first_name, last_name, bio, date_of_birth, privacy, avatar, nickname FROM users WHERE id = $1", userID).Scan(
 		&userInfo.Username, &userInfo.Email, &userInfo.FirstName, &userInfo.LastName, &userInfo.Bio, &userInfo.DateOfBirth, &userInfo.Privacy, &userInfo.Avatar, &userInfo.Nickname)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -108,7 +108,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 	}
 	// Check if the current user is following the profile user
 	query := `
-		SELECT status FROM followers WHERE follower_id = ? AND followed_id = ?`
+		SELECT status FROM followers WHERE follower_id = $1 AND followed_id = $2`
 	var followStatus string
 	err = db.DB.QueryRow(query, user_id, userID).Scan(&followStatus)
 	if err != nil {
@@ -150,7 +150,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var postCount int
-	err = db.DB.QueryRow("SELECT COUNT(*) FROM posts WHERE user_id = ?", userID).Scan(&postCount)
+	err = db.DB.QueryRow("SELECT COUNT(*) FROM posts WHERE user_id = $1", userID).Scan(&postCount)
 	if err != nil {
 		logger.LogError("Error counting posts", err)
 		http.Error(w, "Error getting post count", http.StatusInternalServerError)
@@ -214,7 +214,7 @@ func UpdatePrivacy(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update the privacy setting in the database
-	_, err = db.DB.Exec("UPDATE users SET privacy = ? WHERE username = ?", request.Privacy, username)
+	_, err = db.DB.Exec("UPDATE users SET privacy = $1 WHERE username = $2", request.Privacy, username)
 	if err != nil {
 		logger.LogError("Failed to update privacy", err)
 		http.Error(w, "Failed to update privacy", http.StatusInternalServerError)
@@ -228,7 +228,7 @@ func UpdatePrivacy(w http.ResponseWriter, r *http.Request) {
 
 func GetFollowersCount(userID string) (int, error) {
 	var count int
-	err := db.DB.QueryRow("SELECT COUNT(*) FROM followers WHERE followed_id = ? AND status = 'accepted'", userID).Scan(&count)
+	err := db.DB.QueryRow("SELECT COUNT(*) FROM followers WHERE followed_id = $1 AND status = 'accepted'", userID).Scan(&count)
 	if err != nil {
 		return 0, err
 	}
@@ -237,7 +237,7 @@ func GetFollowersCount(userID string) (int, error) {
 
 func GetFollowingCount(userID string) (int, error) {
 	var count int
-	err := db.DB.QueryRow("SELECT COUNT(*) FROM followers WHERE follower_id = ? AND status = 'accepted'", userID).Scan(&count)
+	err := db.DB.QueryRow("SELECT COUNT(*) FROM followers WHERE follower_id = $1 AND status = 'accepted'", userID).Scan(&count)
 	if err != nil {
 		return 0, err
 	}
@@ -249,7 +249,7 @@ func GetFollowerUsernames(userID string) ([]string, error) {
 		SELECT u.username 
 		FROM users u 
 		JOIN followers f ON u.id = f.follower_id 
-		WHERE f.followed_id = ? AND f.status = 'accepted'`, userID)
+		WHERE f.followed_id = $1 AND f.status = 'accepted'`, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -271,7 +271,7 @@ func GetFollowingUsernames(userID string) ([]string, error) {
 		SELECT u.username 
 		FROM users u 
 		JOIN followers f ON u.id = f.followed_id 
-		WHERE f.follower_id = ? AND f.status = 'accepted'`, userID)
+		WHERE f.follower_id = $1 AND f.status = 'accepted'`, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -323,13 +323,13 @@ func IsFollowing(w http.ResponseWriter, r *http.Request) {
 
 	// Get the user IDs from the usernames
 	var followerID, followedID string
-	err = db.DB.QueryRow("SELECT id FROM users WHERE username = ?", followerUsername).Scan(&followerID)
+	err = db.DB.QueryRow("SELECT id FROM users WHERE username = $1", followerUsername).Scan(&followerID)
 	if err != nil {
 		http.Error(w, "Error finding follower user", http.StatusInternalServerError)
 		return
 	}
 
-	err = db.DB.QueryRow("SELECT id FROM users WHERE username = ?", followedUsername).Scan(&followedID)
+	err = db.DB.QueryRow("SELECT id FROM users WHERE username = $1", followedUsername).Scan(&followedID)
 	if err != nil {
 		http.Error(w, "Error finding followed user", http.StatusInternalServerError)
 		return
@@ -339,7 +339,7 @@ func IsFollowing(w http.ResponseWriter, r *http.Request) {
 	var exists bool
 	err = db.DB.QueryRow(`SELECT EXISTS(
         SELECT 1 FROM followers 
-        WHERE follower_id = ? AND followed_id = ? AND status = 'accepted'
+        WHERE follower_id = $1 AND followed_id = $2 AND status = 'accepted'
     )`, followerID, followedID).Scan(&exists)
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
@@ -354,7 +354,7 @@ func IsFollowing(w http.ResponseWriter, r *http.Request) {
 func IsAcceptedFollower(viewerID, ownerID string) (bool, error) {
 	var exists bool
 	err := db.DB.QueryRow(
-		"SELECT EXISTS(SELECT 1 FROM followers WHERE follower_id = ? AND followed_id = ? AND status = 'accepted')",
+		"SELECT EXISTS(SELECT 1 FROM followers WHERE follower_id = $1 AND followed_id = $2 AND status = 'accepted')",
 		viewerID, ownerID,
 	).Scan(&exists)
 	return exists, err
@@ -391,7 +391,7 @@ func GetOwnPosts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userID string
-	err := db.DB.QueryRow("SELECT id FROM users WHERE username = ?", username).Scan(&userID)
+	err := db.DB.QueryRow("SELECT id FROM users WHERE username = $1", username).Scan(&userID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("No user found with the given username")
@@ -405,16 +405,16 @@ func GetOwnPosts(w http.ResponseWriter, r *http.Request) {
 	query := `
 		SELECT DISTINCT p.id, p.user_id, p.author, p.content, p.title, p.creation_date, p.status, u.avatar, p.image
 		FROM posts p
-		LEFT JOIN postsPrivacy pp ON p.id = pp.post_id
+		LEFT JOIN posts_privacy pp ON p.id = pp.post_id
 		LEFT JOIN users u ON p.user_id = u.id
-		WHERE p.user_id = ?
+		WHERE p.user_id = $1
   		AND (
     	p.status = 'public'
     	OR (p.status = 'private' AND EXISTS (
-        SELECT 1 FROM followers WHERE follower_id = ? AND followed_id = ? AND status = 'accepted'
+        SELECT 1 FROM followers WHERE follower_id = $2 AND followed_id = $3 AND status = 'accepted'
     	))
-    	OR (p.status = 'semi-private' AND pp.user_id = ?)
-    	OR (? = p.user_id)
+    	OR (p.status = 'semi-private' AND pp.user_id = $4)
+    	OR ($5 = p.user_id)
   )
 ORDER BY p.creation_date DESC
 	`
@@ -439,7 +439,7 @@ ORDER BY p.creation_date DESC
 	for i, post := range posts {
 		// Get the comments count for each post
 		var commentsCount int
-		err := db.DB.QueryRow("SELECT COUNT(*) FROM comments WHERE post_id = ?", post.Id).Scan(&commentsCount)
+		err := db.DB.QueryRow("SELECT COUNT(*) FROM comments WHERE post_id = $1", post.Id).Scan(&commentsCount)
 		if err != nil {
 			fmt.Println("Error getting comments count:", err)
 			http.Error(w, "Error getting comments count", http.StatusInternalServerError)
@@ -570,7 +570,7 @@ func GetFollowersAndFollowingPosts(w http.ResponseWriter, r *http.Request) {
 	followersQuery := `
 		SELECT follower_id
 		FROM followers
-		WHERE followed_id = ? and status = 'accepted'
+		WHERE followed_id = $1 and status = 'accepted'
     `
 	followersRows, err := db.DB.Query(followersQuery, userID)
 	if err != nil {
@@ -646,7 +646,7 @@ func CheckMyPrivacy(w http.ResponseWriter, r *http.Request) {
 	}
 	username, _ := session.GetUsernameFromUserID(username1)
 
-	row := db.DB.QueryRow(`SELECT privacy FROM users WHERE username=?`, username)
+	row := db.DB.QueryRow(`SELECT privacy FROM users WHERE username=$1`, username)
 	var privacy string
 	err := row.Scan(&privacy)
 	if err != nil {
@@ -674,7 +674,7 @@ func GetInvitationsFollow(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch the invitations from the database
-	rows, err := db.DB.Query("SELECT follower_id FROM Followers WHERE followed_id = ? AND status = 'pending'", userID)
+	rows, err := db.DB.Query("SELECT follower_id FROM Followers WHERE followed_id = $1 AND status = 'pending'", userID)
 	if err != nil {
 		fmt.Println("Error fetching invitations:", err)
 		http.Error(w, "Failed to fetch invitations", http.StatusInternalServerError)
@@ -699,7 +699,7 @@ func GetInvitationsFollow(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Fetch the username for the follower ID
-		err = db.DB.QueryRow("SELECT username FROM users WHERE id = ?", invitation.FollowerID).Scan(&invitation.Username)
+		err = db.DB.QueryRow("SELECT username FROM users WHERE id = $1", invitation.FollowerID).Scan(&invitation.Username)
 		if err != nil {
 			fmt.Println("Error fetching username:", err)
 			http.Error(w, "Failed to fetch username", http.StatusInternalServerError)
@@ -746,7 +746,7 @@ func AcceptInvitation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update the status in the database
-	_, err = db.DB.Exec("UPDATE Followers SET status = 'accepted' WHERE follower_id = ? AND followed_id = ?", follower_id, userID)
+	_, err = db.DB.Exec("UPDATE Followers SET status = 'accepted' WHERE follower_id = $1 AND followed_id = $2", follower_id, userID)
 	if err != nil {
 		fmt.Println("Error updating invitation status:", err)
 		http.Error(w, "Failed to update invitation status", http.StatusInternalServerError)

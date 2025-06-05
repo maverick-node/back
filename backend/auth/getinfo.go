@@ -51,7 +51,7 @@ func Getinfo(w http.ResponseWriter, r *http.Request) {
 	var info Info
 
 	avatar := ""
-	err = db.DB.QueryRow("SELECT id, username, email, first_name, last_name, date_of_birth,bio, avatar FROM users WHERE username=?", username).Scan(&info.ID, &info.Username, &info.Email, &info.Firstname, &info.Lastname, &info.Date, &info.Bio, &avatar)
+	err = db.DB.QueryRow("SELECT id, username, email, first_name, last_name, date_of_birth,bio, avatar FROM users WHERE username=$1", username).Scan(&info.ID, &info.Username, &info.Email, &info.Firstname, &info.Lastname, &info.Date, &info.Bio, &avatar)
 	if err != nil {
 		logger.LogError("Error retrieving user information", err)
 		if err == sql.ErrNoRows {

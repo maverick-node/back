@@ -29,7 +29,7 @@ func GetAvatar(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&ava)
 
 		query := `
-		SELECT avatar FROM users WHERE username = ?
+		SELECT avatar FROM users WHERE username = $1
 	`
 		fmt.Println("username", ava.Username)
 		rows, err := db.DB.Query(query, ava.Username)

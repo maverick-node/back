@@ -5,32 +5,28 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/mattn/go-sqlite3"
-	migrate "github.com/rubenv/sql-migrate"
+	_ "github.com/lib/pq"
 )
 
 var DB *sql.DB
 
 func Initdb() {
+	dbURL := "postgresql://postgres:UMBrrHSVgkroxZUGNXTZlmywVsGgQecY@yamabiko.proxy.rlwy.net:57598/railway"
+
 	var err error
-	DB, err = sql.Open("sqlite3", "./db/db.db")
+	DB, err = sql.Open("postgres", dbURL)
 	if err != nil {
-		fmt.Println("Failed to open database:", err)
-		return
+		log.Fatal(err)
 	}
 
 	if err := DB.Ping(); err != nil {
-		fmt.Println("Failed to connect to database:", err)
-		return
+		log.Fatal(err)
 	}
 
-	migrations := &migrate.FileMigrationSource{
-		Dir: "db/migrations/sqlite3",
-	}
+	fmt.Println("Connected to PostgreSQL successfully!")
 
-	n, err := migrate.Exec(DB, "sqlite3", migrations, migrate.Up)
-	if err != nil {
-		log.Fatalf("Migration failed: %v", err)
+	// Run migrations
+	if err := RunMigrations(); err != nil {
+		log.Fatal("Failed to run migrations:", err)
 	}
-	fmt.Printf("Applied %d migrations!\n", n)
 }

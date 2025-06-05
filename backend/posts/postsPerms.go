@@ -11,7 +11,7 @@ func CheckUserPostPermission(userID string, postID string) bool {
 		status      string
 	)
 
-	err := db.DB.QueryRow(`SELECT user_id, status FROM posts WHERE id = ?`, postID).Scan(&postOwnerID, &status)
+	err := db.DB.QueryRow(`SELECT user_id, status FROM posts WHERE id = $1`, postID).Scan(&postOwnerID, &status)
 	if err != nil {
 		fmt.Println("Error fetching post details 1:", err)
 		return false // post makinchi
@@ -26,12 +26,12 @@ func CheckUserPostPermission(userID string, postID string) bool {
 		return true
 
 	case "semi-private":
-		// Check if user is in postsPrivacy table
+		// Check if user is in posts_privacy table
 		var exists bool
 		err := db.DB.QueryRow(`
-			SELECT EXISTS(
-				SELECT 1 FROM postsPrivacy 
-				WHERE post_id = ? AND user_id = ?
+			SELECT EXISTS (
+				SELECT 1 FROM posts_privacy
+				WHERE post_id = $1 AND user_id = $2
 			)`, postID, userID).Scan(&exists)
 		if err != nil {
 			fmt.Println("Error fetching post details 2:", err)
@@ -45,7 +45,7 @@ func CheckUserPostPermission(userID string, postID string) bool {
 		err := db.DB.QueryRow(`
 			SELECT EXISTS(
 				SELECT 1 FROM Followers 
-				WHERE follower_id = ? AND followed_id = ? AND status = 'accepted'
+				WHERE follower_id = $1 AND followed_id = $2 AND status = 'accepted'
 			)`, userID, postOwnerID).Scan(&exists)
 		if err != nil {
 			fmt.Println("Error fetching post details 3:", err)

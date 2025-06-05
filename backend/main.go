@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
 
 	"social-net/auth"
 	"social-net/comments"
@@ -20,18 +19,6 @@ import (
 )
 
 func main() {
-	// Get port from environment variable or use default
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
-	// Get frontend URL from environment variable or use default
-	frontendURL := os.Getenv("FRONTEND_URL")
-	if frontendURL == "" {
-		frontendURL = "https://frontend-social-net.vercel.app"
-	}
-
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
@@ -102,11 +89,13 @@ func main() {
 	http.HandleFunc("/api/markasread", notification.MarkNotificationAsRead)
 	http.HandleFunc("/api/events/join", events.JoinEvent)
 
+	// WebSocket routes
 	http.HandleFunc("/ws/group/", messages.HandleGroupWebSocket)
+	http.HandleFunc("/ws/notifications", notification.HandleNotificationWebSocket)
+
 	// Utils routes
 	http.HandleFunc("/api/allusers", utils.Users)
 	http.HandleFunc("/api/getavatar", auth.GetAvatar)
 
-	log.Printf("Server starting on port %s", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

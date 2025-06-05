@@ -47,14 +47,14 @@ func Getposts(w http.ResponseWriter, r *http.Request) {
 	query := `
         SELECT DISTINCT p.id, p.author, p.content, p.title, p.user_id, p.creation_date, p.status, u.avatar, p.Image
         FROM posts p
-        LEFT JOIN postsPrivacy pp ON p.id = pp.post_id
+        LEFT JOIN posts_privacy pp ON p.id = pp.post_id
         LEFT JOIN Followers f ON p.user_id = f.followed_id
 		LEFT JOIN users u ON p.user_id = u.id
         WHERE 
             p.status = 'public' OR
-            (p.status = 'semi-private' AND pp.user_id = ?) OR
-            (f.follower_id = ? AND f.status = 'accepted') OR
-            p.user_id = ?
+            (p.status = 'semi-private' AND pp.user_id = $1) OR
+            (f.follower_id = $2 AND f.status = 'accepted') OR
+            p.user_id = $3
         ORDER BY p.creation_date DESC
     `
 

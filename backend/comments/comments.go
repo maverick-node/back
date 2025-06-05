@@ -156,7 +156,7 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 			comment.Image = safeFilename
 			fmt.Println("Image saved successfully:", safeFilename)
 		}
-		_, err = db.DB.Exec("INSERT INTO comments (id, post_id, author, content,image, creation_date) VALUES (?,?, ?, ?, ?, ?)",
+		_, err = db.DB.Exec("INSERT INTO comments (id, post_id, author, content,image, creation_date) VALUES ($1, $2, $3, $4, $5, $6)",
 			commentID, comment.PostId, username, comment.Comment, comment.Image, time.Now())
 		// Handle database insertion errors
 		if err != nil {
@@ -177,7 +177,7 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 
 func CheckPostExists(postid string) bool {
 	var exists bool
-	err := db.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM posts WHERE id = ?)", postid).Scan(&exists)
+	err := db.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM posts WHERE id = $1)", postid).Scan(&exists)
 	if err != nil {
 		fmt.Println("Error checking if post exists:", err)
 		return false
@@ -227,7 +227,7 @@ func Getcomments(w http.ResponseWriter, r *http.Request) {
 	SELECT c.post_id, c.content, c.author, u.avatar, c.image, c.creation_date
 	FROM comments c
 	LEFT JOIN users u ON c.author = u.username
-	WHERE c.post_id = ?
+	WHERE c.post_id = $1
 	ORDER BY c.creation_date DESC
 `, postid)
 	if err != nil {

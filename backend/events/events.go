@@ -444,8 +444,8 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		(SELECT COUNT(*) FROM event_responses WHERE event_id = e.id AND option = -1) as not_going_count
 	FROM events e
 	LEFT JOIN event_responses er 
-		ON e.id = er.event_id AND er.user_id = ?
-	WHERE e.group_id = ?
+		ON e.id = er.event_id AND er.user_id = $1
+	WHERE e.group_id = $2
 	ORDER BY e.event_datetime ASC
 	`
 	rows, err := db.DB.Query(query, userID, groupID)

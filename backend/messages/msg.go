@@ -42,8 +42,8 @@ func OpenChat(w http.ResponseWriter, r *http.Request) {
 	query := `
 		SELECT DISTINCT u.username, u.id, u.avatar, u.first_name || ' ' || u.last_name
 		FROM users u
-		JOIN Followers f ON (f.followed_id = u.id AND f.follower_id = ?) OR (f.follower_id = u.id AND f.followed_id = ?)
-		WHERE u.id != ? AND f.status = 'accepted'
+		JOIN Followers f ON (f.followed_id = u.id AND f.follower_id = $1) OR (f.follower_id = u.id AND f.followed_id = $2)
+		WHERE u.id != $3 AND f.status = 'accepted'
 		ORDER BY u.username
 	`
 

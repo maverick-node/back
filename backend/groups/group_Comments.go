@@ -102,7 +102,7 @@ func AddGroupComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = db.DB.Exec(
-		"INSERT INTO group_comments (id, group_post_id, author, content, image, creation_date) VALUES (?, ?, ?, ?, ?, ?)",
+		"INSERT INTO group_comments (id, group_post_id, author, content, image, creation_date) VALUES ($1, $2, $3, $4, $5, $6)",
 		commentID.String(), postId, username, commentText, imageFilename, time.Now(),
 	)
 	if err != nil {
@@ -142,7 +142,7 @@ func GetGroupComments(w http.ResponseWriter, r *http.Request) {
         SELECT gc.id, gc.group_post_id, gc.author, u.avatar, gc.content, gc.image, gc.creation_date
         FROM group_comments gc
         LEFT JOIN users u ON gc.author = u.username
-        WHERE gc.group_post_id = ?
+        WHERE gc.group_post_id = $1
         ORDER BY gc.creation_date DESC
     `, groupPostID)
 	if err != nil {

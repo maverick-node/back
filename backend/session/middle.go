@@ -24,7 +24,7 @@ func Middleware(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	var sessionCount int
-	err = db.DB.QueryRow("SELECT COUNT(*) FROM sessions WHERE token=?", re.Value).Scan(&sessionCount)
+	err = db.DB.QueryRow("SELECT COUNT(*) FROM sessions WHERE token=$1", re.Value).Scan(&sessionCount)
 	if err != nil {
 		json.NewEncoder(w).Encode(map[string]string{
 			"message": "Database query failed",

@@ -135,7 +135,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	username := generateUSername(user.FirstName, user.LastName)
 	_, err = db.DB.Exec(`
 		INSERT INTO users (id, username, email, password, first_name, last_name, date_of_birth, bio, privacy, avatar, nickname)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
 		user_id, username, user.Email, newpss, user.FirstName, user.LastName, user.Birthday, user.Bio, privacy, avatarFilename, user.Nickname)
 	if err != nil {
 		log.Println("DB error:", err)
@@ -177,7 +177,7 @@ func generateUSername(firstName, lastName string) string {
 	firstInitial := strings.ToLower(string(firstName[0]))
 	lowerLast := strings.ToLower(lastName)
 	usernaem := firstInitial + lowerLast
-	query := `SELECT EXISTS(SELECT 1 FROM users WHERE username = ?)`
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE username = $1)`
 	for i := 1; i < 100; i++ {
 		username := fmt.Sprintf("%s%d", usernaem, i)
 		var exists bool

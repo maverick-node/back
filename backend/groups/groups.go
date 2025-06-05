@@ -1085,11 +1085,11 @@ func AddGroupPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if len(post.Content) < 10 {
-		log.Println("Group post content too short")
-		http.Error(w, "Content must be at least 10 characters long", http.StatusBadRequest)
-		return
-	}
+	// if len(post.Content) < 10 {
+	// 	log.Println("Group post content too short")
+	// 	http.Error(w, "Content must be at least 10 characters long", http.StatusBadRequest)
+	// 	return
+	// }
 
 	if len(post.Content) > 1000 {
 		log.Println("Group post content too long")

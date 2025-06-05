@@ -176,7 +176,7 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 func isGroupExist(groupID string) bool {
 	var exists bool
 	query := `
-		SELECT EXISTS(SELECT 1 FROM groups WHERE id = ?)
+		SELECT EXISTS(SELECT 1 FROM groups WHERE id = $1)
 	`
 	err := db.DB.QueryRow(query, groupID).Scan(&exists)
 	if err != nil {
@@ -190,7 +190,7 @@ func isGroupMember(userID, groupID string) bool {
 	query := `
 		SELECT EXISTS(
 			SELECT 1 FROM group_members 
-			WHERE group_id = ? AND user_id = ? AND status = 'accepted'
+			WHERE group_id = $1 AND user_id = $2 AND status = 'accepted'
 		)
 	`
 	err := db.DB.QueryRow(query, groupID, userID).Scan(&exists)
@@ -204,7 +204,7 @@ func isGroupMember(userID, groupID string) bool {
 func saveGroupMessage(msg GroupMessage) error {
 	query := `
 		INSERT INTO group_messages (id, group_id, sender_id, content, created_at)
-		VALUES (?, ?, ?, ?, ?)
+		VALUES ($1, $2, $3, $4, $5)
 	`
 	_, err := db.DB.Exec(query, msg.ID, msg.GroupID, msg.SenderID, msg.Content, msg.CreatedAt)
 	return err
@@ -215,7 +215,7 @@ func sendRecentMessages(conn *websocket.Conn, groupID string) {
 		SELECT m.id, m.group_id, m.sender_id, m.content, m.created_at, u.username, u.avatar
 		FROM group_messages m
 		JOIN users u ON m.sender_id = u.id
-		WHERE m.group_id = ?
+		WHERE m.group_id = $1
 		ORDER BY m.created_at DESC
 		LIMIT 50
 	`
@@ -265,7 +265,7 @@ func broadcastGroupMessage(msg GroupMessage) {
 	// Get sender's username and avatar
 	var username string
 	var avatar sql.NullString
-	err := db.DB.QueryRow("SELECT username, avatar FROM users WHERE id = ?", msg.SenderID).Scan(&username, &avatar)
+	err := db.DB.QueryRow("SELECT username, avatar FROM users WHERE id = $1", msg.SenderID).Scan(&username, &avatar)
 	if err != nil {
 		log.Printf("Error getting username and avatar: %v", err)
 		return
@@ -305,7 +305,7 @@ func broadcastGroupMessage(msg GroupMessage) {
 
 func getGroupMembers(groupID string) ([]string, error) {
 	query := `
-		SELECT user_id FROM group_members WHERE group_id = ?
+		SELECT user_id FROM group_members WHERE group_id = $1
 	`
 	rows, err := db.DB.Query(query, groupID)
 	if err != nil {

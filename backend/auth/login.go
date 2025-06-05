@@ -69,7 +69,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		if user.Username != "" && user.Password != "" && user.FirstName == "" {
 			log.Println("[Login] Login attempt for user:", user.Username)
 			var pass string
-			err := db.DB.QueryRow("SELECT password FROM users WHERE username = ? OR email = ?", user.Username, user.Username).Scan(&pass)
+			err := db.DB.QueryRow("SELECT password FROM users WHERE username = $1 OR email = $2", user.Username, user.Username).Scan(&pass)
 			log.Println("[Login] DB password fetch result:", pass, "err:", err)
 			if !Validate(pass, user.Password) {
 				log.Println("[Login] Invalid password for user:", user.Username)
