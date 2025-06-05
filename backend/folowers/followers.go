@@ -16,7 +16,7 @@ import (
 
 func SendJSON(w http.ResponseWriter, r *http.Request) {
 	// Set CORS headers
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")

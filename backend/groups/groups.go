@@ -49,7 +49,7 @@ type GroupPost struct {
 
 func CreateGroup(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -128,7 +128,7 @@ func CreateGroup(w http.ResponseWriter, r *http.Request) {
 
 func GetGroup(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -175,7 +175,7 @@ func GetGroup(w http.ResponseWriter, r *http.Request) {
 
 func AddMemberToGroup(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -296,7 +296,7 @@ func AddMemberToGroup(w http.ResponseWriter, r *http.Request) {
 
 func AcceptGroupMember(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -388,7 +388,7 @@ func GetAcceptedMembers(db *sql.DB, groupID int) ([]int, error) {
 
 func RemoveMemberFromGroup(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -485,7 +485,7 @@ func GetGroupMembers(db *sql.DB, groupID int) ([]int, error) {
 
 func GetGroups(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -561,7 +561,7 @@ func GetGroups(w http.ResponseWriter, r *http.Request) {
 
 func MyGroups(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -648,7 +648,7 @@ func GetPendingInvitations(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("=== GetPendingInvitations called ===")
 
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -727,7 +727,7 @@ func GetPendingInvitations(w http.ResponseWriter, r *http.Request) {
 // HandleInvitation handles accepting or declining a group invitation
 func HandleInvitation(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -806,7 +806,7 @@ func HandleInvitation(w http.ResponseWriter, r *http.Request) {
 // GetGroupInvitations handles fetching pending invitations for a specific group
 func GetGroupInvitations(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -858,7 +858,7 @@ func GetGroupInvitations(w http.ResponseWriter, r *http.Request) {
 // HandleGroupInvitation handles accepting or declining a group invitation
 func HandleGroupInvitation(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -915,7 +915,7 @@ func HandleGroupInvitation(w http.ResponseWriter, r *http.Request) {
 // IsGroupMember checks if a user is a member of a specific group
 func IsGroupMember(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -976,7 +976,7 @@ func IsGroupMember(w http.ResponseWriter, r *http.Request) {
 // CheckGroupMembershipStatus checks if a user is accepted in a group
 func CheckGroupMembershipStatus(w http.ResponseWriter, r *http.Request) {
 	// Enable CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -1032,7 +1032,7 @@ func CheckGroupMembershipStatus(w http.ResponseWriter, r *http.Request) {
 
 func AddGroupPost(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -1187,7 +1187,7 @@ func saveBase64Image(base64Data, postID string) (string, error) {
 
 func GetGroupPosts(w http.ResponseWriter, r *http.Request) {
 	// CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -1245,7 +1245,7 @@ func GetGroupPosts(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if imageFilename.Valid && imageFilename.String != "" {
-			post.Image = fmt.Sprintf("http://localhost:8080/uploads/%s", imageFilename.String)
+			post.Image = fmt.Sprintf("https://back-production-bb9b.up.railway.app/uploads/%s", imageFilename.String)
 		}
 		posts = append(posts, post)
 	}
@@ -1259,7 +1259,7 @@ func GetGroupPosts(w http.ResponseWriter, r *http.Request) {
 // GetUserPendingInvitations gets all pending group invitations for a user
 func GetUserPendingInvitations(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -1321,7 +1321,7 @@ func GetUserPendingInvitations(w http.ResponseWriter, r *http.Request) {
 // RequestToJoinGroup handles user requests to join a group
 func RequestToJoinGroup(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -1442,7 +1442,7 @@ func RequestToJoinGroup(w http.ResponseWriter, r *http.Request) {
 // GetGroupMemberStatuses returns the status of all users for a specific group
 func GetGroupMemberStatuses(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -1493,7 +1493,7 @@ func GetGroupMemberStatuses(w http.ResponseWriter, r *http.Request) {
 // CancelGroupRequest handles canceling a pending group join request
 func CancelGroupRequest(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")

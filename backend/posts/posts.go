@@ -32,10 +32,10 @@ type Posts struct {
 
 func Post(w http.ResponseWriter, r *http.Request) {
 	// Set CORS headers
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app") // Allow frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                              // Allow cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                    // Allow methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")           // Allow headers
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // Allow frontend origin
+	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // Allow cookies
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // Allow methods
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")          // Allow headers
 
 	// Handle OPTIONS preflight request
 	if r.Method == "OPTIONS" {

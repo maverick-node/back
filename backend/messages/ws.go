@@ -245,7 +245,7 @@ func saveMessageToDB(sender string, receiver string, message string, typee strin
 
 func GetMessages(w http.ResponseWriter, r *http.Request) {
 	log.Println("[GetMessages] Starting message fetch request")
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")

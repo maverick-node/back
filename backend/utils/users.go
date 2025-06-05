@@ -10,7 +10,7 @@ import (
 
 func SearchUsers(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")

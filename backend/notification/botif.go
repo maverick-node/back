@@ -212,7 +212,7 @@ type Notification struct {
 // GetNotifications retrieves notifications for a user
 func GetNotifications(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -293,7 +293,7 @@ func GetNotifications(w http.ResponseWriter, r *http.Request) {
 // MarkNotificationAsRead marks a notification as read
 func MarkNotificationAsRead(w http.ResponseWriter, r *http.Request) {
 	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")

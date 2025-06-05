@@ -24,7 +24,7 @@ type GetPost struct {
 
 func Getposts(w http.ResponseWriter, r *http.Request) {
 	// Set CORS headers
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -83,7 +83,7 @@ func Getposts(w http.ResponseWriter, r *http.Request) {
 		}
 		// If there is an image, prepend the URL path so the frontend can access it
 		if post.Image != "" {
-			post.Image = "http://localhost:8080/uploads/" + post.Image
+			post.Image = "https://back-production-bb9b.up.railway.app/uploads/" + post.Image
 		}
 		posts = append(posts, post)
 	}

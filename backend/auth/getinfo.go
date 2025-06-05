@@ -23,10 +23,10 @@ type Info struct {
 }
 
 func Getinfo(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-net.vercel.app") // your frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                              // important for cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                    // include all used methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")                          // accept JSON headers, etc.
+	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // your frontend origin
+	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // important for cookies
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // include all used methods
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")                         // accept JSON headers, etc.
 	// Get the token from the cookie
 	cookie, err := r.Cookie("token")
 	if err != nil {
