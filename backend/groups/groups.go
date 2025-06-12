@@ -48,7 +48,7 @@ type GroupPost struct {
 }
 
 func CreateGroup(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -122,7 +122,7 @@ func CreateGroup(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetGroup(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -165,7 +165,7 @@ func GetGroup(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddMemberToGroup(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -281,7 +281,7 @@ func AddMemberToGroup(w http.ResponseWriter, r *http.Request) {
 }
 
 func AcceptGroupMember(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -368,7 +368,7 @@ func GetAcceptedMembers(db *sql.DB, groupID int) ([]int, error) {
 }
 
 func RemoveMemberFromGroup(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -460,7 +460,7 @@ func GetGroupMembers(db *sql.DB, groupID int) ([]int, error) {
 }
 
 func GetGroups(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -531,7 +531,7 @@ func GetGroups(w http.ResponseWriter, r *http.Request) {
 }
 
 func MyGroups(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -615,7 +615,7 @@ func ShowRequests(w http.ResponseWriter, r *http.Request) {
 func GetPendingInvitations(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("=== GetPendingInvitations called ===")
 
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -690,7 +690,7 @@ func GetPendingInvitations(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleInvitation(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -760,7 +760,7 @@ func HandleInvitation(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetGroupInvitations(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -808,7 +808,7 @@ func GetGroupInvitations(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleGroupInvitation(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -861,7 +861,7 @@ func HandleGroupInvitation(w http.ResponseWriter, r *http.Request) {
 }
 
 func IsGroupMember(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -915,7 +915,7 @@ func IsGroupMember(w http.ResponseWriter, r *http.Request) {
 }
 
 func CheckGroupMembershipStatus(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -965,7 +965,7 @@ func CheckGroupMembershipStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddGroupPost(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -1102,7 +1102,7 @@ func saveBase64Image(base64Data, postID string) (string, error) {
 }
 
 func GetGroupPosts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -1172,7 +1172,7 @@ func GetGroupPosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUserPendingInvitations(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -1230,7 +1230,7 @@ func GetUserPendingInvitations(w http.ResponseWriter, r *http.Request) {
 }
 
 func RequestToJoinGroup(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -1342,7 +1342,7 @@ func RequestToJoinGroup(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetGroupMemberStatuses(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -1387,7 +1387,7 @@ func GetGroupMemberStatuses(w http.ResponseWriter, r *http.Request) {
 }
 
 func CancelGroupRequest(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://happy-mushroom-01036131e.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
