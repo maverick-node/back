@@ -9,3 +9,10 @@ CREATE TABLE
         FOREIGN KEY (sender_id) REFERENCES users (id),
         FOREIGN KEY (receiver_id) REFERENCES users (id)
     );
+
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS messages;
+
+PRAGMA foreign_keys = ON;

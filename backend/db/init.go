@@ -5,28 +5,38 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
+	migrate "github.com/rubenv/sql-migrate"
 )
 
 var DB *sql.DB
 
 func Initdb() {
-	dbURL := "postgresql://postgres:UMBrrHSVgkroxZUGNXTZlmywVsGgQecY@yamabiko.proxy.rlwy.net:57598/railway"
-
 	var err error
-	DB, err = sql.Open("postgres", dbURL)
+	DB, err = sql.Open("sqlite3", "./db/db.db")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Failed to open database:", err)
+		return
 	}
 
 	if err := DB.Ping(); err != nil {
-		log.Fatal(err)
+		fmt.Println("Failed to connect to database:", err)
+		return
 	}
 
-	fmt.Println("Connected to PostgreSQL successfully!")
-
-	// Run migrations
-	if err := RunMigrations(); err != nil {
-		log.Fatal("Failed to run migrations:", err)
+	migrations := &migrate.FileMigrationSource{
+		Dir: "db/migrations/sqlite3",
 	}
+
+	n, err := migrate.Exec(DB, "sqlite3", migrations, migrate.Up)
+	if err != nil {
+		log.Printf("Migration failed: %v", err)
+		downN, downErr := migrate.ExecMax(DB, "sqlite3", migrations, migrate.Down, 1)
+		if downErr != nil {
+			log.Fatalf("Rollback failed: %v", downErr)
+		}
+		log.Printf("Rolled back %d migration(s)", downN)
+		return
+	}
+	fmt.Printf("Applied %d migrations!\n", n)
 }

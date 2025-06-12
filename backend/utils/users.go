@@ -3,14 +3,14 @@ package utils
 import (
 	"encoding/json"
 	"net/http"
-	"social-net/db"
 	"strconv"
 	"strings"
+
+	"social-net/db"
 )
 
 func SearchUsers(w http.ResponseWriter, r *http.Request) {
-	// Handle CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -20,11 +20,9 @@ func SearchUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get search parameters
 	search := strings.TrimSpace(r.URL.Query().Get("search"))
 	groupID := r.URL.Query().Get("group_id")
 
-	// Base query
 	query := `
 		SELECT DISTINCT u.id, u.username, u.email, u.avatar
 		FROM users u

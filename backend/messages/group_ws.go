@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"social-net/db"
-	"social-net/notification"
-	"social-net/session"
 	"strings"
 	"sync"
 	"time"
+
+	"social-net/db"
+	"social-net/notification"
+	"social-net/session"
 
 	"github.com/gofrs/uuid"
 	"github.com/gorilla/websocket"
@@ -21,11 +22,10 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 		CheckOrigin: func(r *http.Request) bool {
-			return r.Header.Get("Origin") == "https://frontend-social-so.vercel.app"
+			return r.Header.Get("Origin") == "https://white-pebble-0a50c5603.6.azurestaticapps.net"
 		},
 	}
 
-	// Map to store group connections
 	groupConnections = make(map[string]map[string]*websocket.Conn)
 	groupMutex       = &sync.Mutex{}
 )
@@ -45,7 +45,6 @@ type GroupMessageRequest struct {
 }
 
 func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
-	// Get current user
 	token, err := r.Cookie("token")
 	if err != nil {
 		http.Error(w, "No authentication token", http.StatusUnauthorized)
@@ -58,7 +57,6 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Upgrade HTTP connection to WebSocket
 	conn, err := groupUpgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("Error upgrading to WebSocket: %v", err)
@@ -66,7 +64,6 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	// Get group ID from URL path
 	groupID := strings.TrimPrefix(r.URL.Path, "/ws/group/")
 	fmt.Println("groupID", groupID)
 	if groupID == "" {
@@ -75,14 +72,13 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Verify user is a member of the group
 	if !isGroupMember(userID, groupID) {
 		errorMsg := map[string]string{"error": "Not a member of this group"}
 		conn.WriteJSON(errorMsg)
 		return
 	}
 
-	//group exist
+	// group exist
 	groupExist := isGroupExist(groupID)
 	if !groupExist {
 		errorMsg := map[string]string{"error": "Group does not exist"}
@@ -90,7 +86,6 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Add connection to group connections
 	groupMutex.Lock()
 	if groupConnections[groupID] == nil {
 		groupConnections[groupID] = make(map[string]*websocket.Conn)
@@ -98,7 +93,6 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 	groupConnections[groupID][userID] = conn
 	groupMutex.Unlock()
 
-	// Remove connection when function returns
 	defer func() {
 		groupMutex.Lock()
 		delete(groupConnections[groupID], userID)
@@ -108,10 +102,8 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 		groupMutex.Unlock()
 	}()
 
-	// Send recent messages
 	sendRecentMessages(conn, groupID)
 
-	// Handle incoming messages
 	for {
 		var msgReq GroupMessageRequest
 		err := conn.ReadJSON(&msgReq)
@@ -122,7 +114,6 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		// Add length validation for group messages
 		if len(msgReq.Content) < 1 {
 			errorMsg := map[string]string{"error": "Message must be at least 1 character long"}
 			conn.WriteJSON(errorMsg)
@@ -135,7 +126,6 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		// Create new message
 		messageID, err := uuid.NewV4()
 		if err != nil {
 			log.Printf("Error generating UUID: %v", err)
@@ -150,7 +140,6 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 			CreatedAt: time.Now(),
 		}
 
-		// Save message to database
 		if err := saveGroupMessage(msg); err != nil {
 			log.Printf("Error saving message: %v", err)
 			continue
@@ -169,14 +158,15 @@ func HandleGroupWebSocket(w http.ResponseWriter, r *http.Request) {
 			}
 			notification.CreateNotificationMessage(memberID, senderid, "group_message", msg.Content)
 		}
-		// Broadcast message to all group members
+
 		broadcastGroupMessage(msg)
 	}
 }
+
 func isGroupExist(groupID string) bool {
 	var exists bool
 	query := `
-		SELECT EXISTS(SELECT 1 FROM groups WHERE id = $1)
+		SELECT EXISTS(SELECT 1 FROM groups WHERE id = ?)
 	`
 	err := db.DB.QueryRow(query, groupID).Scan(&exists)
 	if err != nil {
@@ -185,12 +175,13 @@ func isGroupExist(groupID string) bool {
 	}
 	return exists
 }
+
 func isGroupMember(userID, groupID string) bool {
 	var exists bool
 	query := `
 		SELECT EXISTS(
 			SELECT 1 FROM group_members 
-			WHERE group_id = $1 AND user_id = $2 AND status = 'accepted'
+			WHERE group_id = ? AND user_id = ? AND status = 'accepted'
 		)
 	`
 	err := db.DB.QueryRow(query, groupID, userID).Scan(&exists)
@@ -204,7 +195,7 @@ func isGroupMember(userID, groupID string) bool {
 func saveGroupMessage(msg GroupMessage) error {
 	query := `
 		INSERT INTO group_messages (id, group_id, sender_id, content, created_at)
-		VALUES ($1, $2, $3, $4, $5)
+		VALUES (?, ?, ?, ?, ?)
 	`
 	_, err := db.DB.Exec(query, msg.ID, msg.GroupID, msg.SenderID, msg.Content, msg.CreatedAt)
 	return err
@@ -215,7 +206,7 @@ func sendRecentMessages(conn *websocket.Conn, groupID string) {
 		SELECT m.id, m.group_id, m.sender_id, m.content, m.created_at, u.username, u.avatar
 		FROM group_messages m
 		JOIN users u ON m.sender_id = u.id
-		WHERE m.group_id = $1
+		WHERE m.group_id = ?
 		ORDER BY m.created_at DESC
 		LIMIT 50
 	`
@@ -236,7 +227,6 @@ func sendRecentMessages(conn *websocket.Conn, groupID string) {
 			continue
 		}
 
-		// Set avatar URL or default
 		var avatarURL string
 		if avatar.Valid && avatar.String != "" {
 			avatarURL = avatar.String
@@ -262,16 +252,14 @@ func sendRecentMessages(conn *websocket.Conn, groupID string) {
 }
 
 func broadcastGroupMessage(msg GroupMessage) {
-	// Get sender's username and avatar
 	var username string
 	var avatar sql.NullString
-	err := db.DB.QueryRow("SELECT username, avatar FROM users WHERE id = $1", msg.SenderID).Scan(&username, &avatar)
+	err := db.DB.QueryRow("SELECT username, avatar FROM users WHERE id = ?", msg.SenderID).Scan(&username, &avatar)
 	if err != nil {
 		log.Printf("Error getting username and avatar: %v", err)
 		return
 	}
 
-	// Set avatar URL or default
 	var avatarURL string
 	if avatar.Valid && avatar.String != "" {
 		avatarURL = avatar.String
@@ -279,7 +267,6 @@ func broadcastGroupMessage(msg GroupMessage) {
 		avatarURL = ""
 	}
 
-	// Prepare message for broadcast
 	messageMap := map[string]interface{}{
 		"id":         msg.ID,
 		"group_id":   msg.GroupID,
@@ -290,7 +277,6 @@ func broadcastGroupMessage(msg GroupMessage) {
 		"username":   username,
 	}
 
-	// Broadcast to all connections in the group
 	groupMutex.Lock()
 	defer groupMutex.Unlock()
 
@@ -305,7 +291,7 @@ func broadcastGroupMessage(msg GroupMessage) {
 
 func getGroupMembers(groupID string) ([]string, error) {
 	query := `
-		SELECT user_id FROM group_members WHERE group_id = $1
+		SELECT user_id FROM group_members WHERE group_id = ?
 	`
 	rows, err := db.DB.Query(query, groupID)
 	if err != nil {

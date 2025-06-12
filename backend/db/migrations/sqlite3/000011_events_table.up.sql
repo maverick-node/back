@@ -12,3 +12,10 @@ CREATE TABLE
         FOREIGN KEY (creator_id) REFERENCES users (id),
         FOREIGN KEY (group_id) REFERENCES groups (id)
     );
+
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS events;
+
+PRAGMA foreign_keys = ON;

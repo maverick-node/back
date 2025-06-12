@@ -23,11 +23,11 @@ type Info struct {
 }
 
 func Getinfo(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // your frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // important for cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // include all used methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")                         // accept JSON headers, etc.
-	// Get the token from the cookie
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	cookie, err := r.Cookie("token")
 	if err != nil {
 		logger.LogError("Unauthorized: Missing token", err)
@@ -51,7 +51,7 @@ func Getinfo(w http.ResponseWriter, r *http.Request) {
 	var info Info
 
 	avatar := ""
-	err = db.DB.QueryRow("SELECT id, username, email, first_name, last_name, date_of_birth,bio, avatar FROM users WHERE username=$1", username).Scan(&info.ID, &info.Username, &info.Email, &info.Firstname, &info.Lastname, &info.Date, &info.Bio, &avatar)
+	err = db.DB.QueryRow("SELECT id, username, email, first_name, last_name, date_of_birth,bio, avatar FROM users WHERE username=?", username).Scan(&info.ID, &info.Username, &info.Email, &info.Firstname, &info.Lastname, &info.Date, &info.Bio, &avatar)
 	if err != nil {
 		logger.LogError("Error retrieving user information", err)
 		if err == sql.ErrNoRows {
@@ -65,7 +65,7 @@ func Getinfo(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	// Check if the user has an avatar
+
 	if avatar != "" {
 		info.Avatar = avatar
 	} else {

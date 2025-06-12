@@ -27,24 +27,23 @@ type Comments struct {
 }
 
 func AddComments(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // Allow frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // Allow cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // Allow methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")          // Allow headers
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return
-	} // Respond with 200 OK for preflight request
+	}
 	if r.Method == "POST" {
-		// Parse multipart form data instead of JSON
-		err := r.ParseMultipartForm(10 << 20) // 10MB max
+
+		err := r.ParseMultipartForm(10 << 20)
 		if err != nil {
 			http.Error(w, "Failed to parse form", http.StatusBadRequest)
 			fmt.Println("Failed to parse form:", err)
 			return
 		}
 
-		// Get form values instead of JSON decode
 		postId := r.FormValue("post_id")
 		commentText := r.FormValue("comment")
 
@@ -53,7 +52,6 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Add length validation for comment content
 		if len(commentText) < 1 {
 			http.Error(w, "Comment must be at least 1 character long", http.StatusBadRequest)
 			return
@@ -83,7 +81,6 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Check if user can comment on this post
 		allowed := posts.CheckUserPostPermission(userid, postId)
 		if !allowed {
 			http.Error(w, "Unauthorized: You cannot comment on this post", http.StatusUnauthorized)
@@ -97,7 +94,6 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Create comment struct with form data
 		var comment Comments
 		comment.PostId = postId
 		comment.Comment = commentText
@@ -106,12 +102,12 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 		file, handler, err := r.FormFile("image")
 		if err == nil && file != nil {
 			defer file.Close()
-			// Check file Size
+
 			if handler.Size > 2*1024*1024 {
 				http.Error(w, "image file too large", http.StatusBadRequest)
 				return
 			}
-			// Check file type
+
 			buff := make([]byte, 512)
 			_, _ = file.Read(buff)
 			contentType := http.DetectContentType(buff)
@@ -129,7 +125,7 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid image file type", http.StatusBadRequest)
 				return
 			}
-			// Generate new file name: username_timestamp.ext
+
 			ext := filepath.Ext(handler.Filename)
 			safeFilename := fmt.Sprintf("%s_%d%s", username, time.Now().Unix(), ext)
 
@@ -156,16 +152,14 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 			comment.Image = safeFilename
 			fmt.Println("Image saved successfully:", safeFilename)
 		}
-		_, err = db.DB.Exec("INSERT INTO comments (id, post_id, author, content,image, creation_date) VALUES ($1, $2, $3, $4, $5, $6)",
+		_, err = db.DB.Exec("INSERT INTO comments (id, post_id, author, content,image, creation_date) VALUES (?,?, ?, ?, ?, ?)",
 			commentID, comment.PostId, username, comment.Comment, comment.Image, time.Now())
-		// Handle database insertion errors
 		if err != nil {
 			http.Error(w, "Failed to insert comment", http.StatusInternalServerError)
 			fmt.Println("Failed to insert comment:", err)
 			return
 		}
 
-		// Respond with a success message
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{
 			"message": "Comment created successfully",
@@ -177,7 +171,7 @@ func AddComments(w http.ResponseWriter, r *http.Request) {
 
 func CheckPostExists(postid string) bool {
 	var exists bool
-	err := db.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM posts WHERE id = $1)", postid).Scan(&exists)
+	err := db.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM posts WHERE id = ?)", postid).Scan(&exists)
 	if err != nil {
 		fmt.Println("Error checking if post exists:", err)
 		return false
@@ -186,12 +180,12 @@ func CheckPostExists(postid string) bool {
 }
 
 func Getcomments(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // Allow frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // Allow cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // Allow methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")          // Allow headers
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 	if r.Method == "OPTIONS" {
-		w.WriteHeader(http.StatusOK) // Respond with 200 OK for preflight request
+		w.WriteHeader(http.StatusOK)
 		return
 	}
 	token, _err := r.Cookie("token")
@@ -213,7 +207,7 @@ func Getcomments(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing postid parameter", http.StatusBadRequest)
 		return
 	}
-	// CHeck if post exists and user has permission to view it
+
 	if !CheckPostExists(postid) {
 		http.Error(w, "Post not found", http.StatusNotFound)
 		return
@@ -227,7 +221,7 @@ func Getcomments(w http.ResponseWriter, r *http.Request) {
 	SELECT c.post_id, c.content, c.author, u.avatar, c.image, c.creation_date
 	FROM comments c
 	LEFT JOIN users u ON c.author = u.username
-	WHERE c.post_id = $1
+	WHERE c.post_id = ?
 	ORDER BY c.creation_date DESC
 `, postid)
 	if err != nil {

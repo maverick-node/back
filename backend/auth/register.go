@@ -21,7 +21,7 @@ import (
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -45,7 +45,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := r.ParseMultipartForm(10 << 20) // 10MB max
+	err := r.ParseMultipartForm(10 << 20)
 	if err != nil {
 		http.Error(w, "Failed to parse form", http.StatusBadRequest)
 		return
@@ -72,16 +72,15 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	privacy := "public"
 	avatarFilename := ""
 
-	// Handle avatar upload
 	file, handler, err := r.FormFile("avatar")
 	if err == nil && file != nil {
 		defer file.Close()
-		// Check file Size
+
 		if handler.Size > 2*1024*1024 {
 			http.Error(w, "Avatar file too large", http.StatusBadRequest)
 			return
 		}
-		// Check file type
+
 		buff := make([]byte, 512)
 		_, _ = file.Read(buff)
 		contentType := http.DetectContentType(buff)
@@ -99,7 +98,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid avatar file type", http.StatusBadRequest)
 			return
 		}
-		// Generate new file name: username_timestamp.ext
+
 		ext := filepath.Ext(handler.Filename)
 		safeFilename := fmt.Sprintf("%s_%d%s", user.Username, time.Now().Unix(), ext)
 
@@ -135,7 +134,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	username := generateUSername(user.FirstName, user.LastName)
 	_, err = db.DB.Exec(`
 		INSERT INTO users (id, username, email, password, first_name, last_name, date_of_birth, bio, privacy, avatar, nickname)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		user_id, username, user.Email, newpss, user.FirstName, user.LastName, user.Birthday, user.Bio, privacy, avatarFilename, user.Nickname)
 	if err != nil {
 		log.Println("DB error:", err)
@@ -148,15 +147,10 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func ValidateUser(u *User) error {
-	// if u.Username == "" || !regexp.MustCompile(`^[a-zA-Z0-9_]{3,20}$`).MatchString(u.Username) {
-	// 	return errors.New("invalid username")
-	// }
 	if u.Email == "" || !regexp.MustCompile(`^[^@\s]+@[^@\s]+\.[^@\s]+$`).MatchString(u.Email) {
 		return errors.New("invalid email")
 	}
-	// if len(u.Password) < 8 || !regexp.MustCompile(`[A-Za-z]`).MatchString(u.Password) || !regexp.MustCompile(`\d`).MatchString(u.Password) {
-	// 	return errors.New("password must contain at least 8 characters with letters and numbers")
-	// }
+
 	if u.FirstName == "" || !regexp.MustCompile(`^[a-zA-Z]{1,30}$`).MatchString(u.FirstName) {
 		return errors.New("invalid first name")
 	}
@@ -177,7 +171,7 @@ func generateUSername(firstName, lastName string) string {
 	firstInitial := strings.ToLower(string(firstName[0]))
 	lowerLast := strings.ToLower(lastName)
 	usernaem := firstInitial + lowerLast
-	query := `SELECT EXISTS(SELECT 1 FROM users WHERE username = $1)`
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE username = ?)`
 	for i := 1; i < 100; i++ {
 		username := fmt.Sprintf("%s%d", usernaem, i)
 		var exists bool

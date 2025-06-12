@@ -23,13 +23,11 @@ type GetPost struct {
 }
 
 func Getposts(w http.ResponseWriter, r *http.Request) {
-	// Set CORS headers
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Get the user ID from the session token
 	tokene, err := r.Cookie("token")
 	if err != nil {
 		logger.LogError("Missing token", err)
@@ -43,18 +41,17 @@ func Getposts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Query to fetch posts
 	query := `
         SELECT DISTINCT p.id, p.author, p.content, p.title, p.user_id, p.creation_date, p.status, u.avatar, p.Image
         FROM posts p
-        LEFT JOIN posts_privacy pp ON p.id = pp.post_id
+        LEFT JOIN postsPrivacy pp ON p.id = pp.post_id
         LEFT JOIN Followers f ON p.user_id = f.followed_id
 		LEFT JOIN users u ON p.user_id = u.id
         WHERE 
             p.status = 'public' OR
-            (p.status = 'semi-private' AND pp.user_id = $1) OR
-            (f.follower_id = $2 AND f.status = 'accepted') OR
-            p.user_id = $3
+            (p.status = 'semi-private' AND pp.user_id = ?) OR
+            (f.follower_id = ? AND f.status = 'accepted') OR
+            p.user_id = ?
         ORDER BY p.creation_date DESC
     `
 
@@ -66,7 +63,6 @@ func Getposts(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	// Parse the results
 	var posts []GetPost
 	for rows.Next() {
 		var post GetPost
@@ -81,14 +77,13 @@ func Getposts(w http.ResponseWriter, r *http.Request) {
 			logger.LogError("Unauthorized access to post", fmt.Errorf("user %s not allowed to access post %s", userID, post.Id))
 			continue
 		}
-		// If there is an image, prepend the URL path so the frontend can access it
+
 		if post.Image != "" {
-			post.Image = "https://back-production-bb9b.up.railway.app/uploads/" + post.Image
+			post.Image = "http://localhost:8080/uploads/" + post.Image
 		}
 		posts = append(posts, post)
 	}
 
-	// Return the posts as JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(posts)
 }

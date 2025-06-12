@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
 	"social-net/db"
 	"social-net/session"
 )
@@ -21,7 +22,7 @@ type User struct {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
@@ -65,11 +66,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Printf("[Login] User struct decoded: %+v\n", user)
 
-		// LOGIN
 		if user.Username != "" && user.Password != "" && user.FirstName == "" {
 			log.Println("[Login] Login attempt for user:", user.Username)
 			var pass string
-			err := db.DB.QueryRow("SELECT password FROM users WHERE username = $1 OR email = $2", user.Username, user.Username).Scan(&pass)
+			err := db.DB.QueryRow("SELECT password FROM users WHERE username = ? OR email = ?", user.Username, user.Username).Scan(&pass)
 			log.Println("[Login] DB password fetch result:", pass, "err:", err)
 			if !Validate(pass, user.Password) {
 				log.Println("[Login] Invalid password for user:", user.Username)

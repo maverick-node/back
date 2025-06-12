@@ -8,3 +8,10 @@ CREATE TABLE
         FOREIGN KEY (group_id) REFERENCES groups (id),
         FOREIGN KEY (user_id) REFERENCES users (id)
     );
+
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS group_members;
+
+PRAGMA foreign_keys = ON;

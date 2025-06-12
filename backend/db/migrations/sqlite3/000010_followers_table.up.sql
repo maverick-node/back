@@ -8,3 +8,10 @@ CREATE TABLE
         FOREIGN KEY (follower_id) REFERENCES users (id),
         FOREIGN KEY (followed_id) REFERENCES users (id)
     );
+
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS Followers;
+
+PRAGMA foreign_keys = ON;

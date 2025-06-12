@@ -5,14 +5,12 @@ import (
 	"net/http"
 )
 
-// Response represents a standard API response
 type Response struct {
 	Success bool        `json:"success"`
 	Data    interface{} `json:"data,omitempty"`
 	Error   string      `json:"error,omitempty"`
 }
 
-// sendJSONResponse sends a JSON response with the given data and status code
 func SendJSONResponse(w http.ResponseWriter, r *http.Request, data interface{}, statusCode int) {
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -29,7 +27,6 @@ func SendJSONResponse(w http.ResponseWriter, r *http.Request, data interface{}, 
 	json.NewEncoder(w).Encode(data)
 }
 
-// sendErrorResponse sends an error response with the given message and status code
 func SendErrorResponse(w http.ResponseWriter, r *http.Request, message string, statusCode int) {
 	SendJSONResponse(w, r, map[string]string{"error": message}, statusCode)
 }

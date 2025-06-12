@@ -14,12 +14,12 @@ type PostPrv struct {
 }
 
 func PostPrivacy(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	rows, err := db.DB.Query("SELECT * FROM posts_privacy")
+	rows, err := db.DB.Query("SELECT * FROM postsPrivacy")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -40,7 +40,7 @@ func PostPrivacy(w http.ResponseWriter, r *http.Request) {
 		posts = append(posts, post)
 	}
 	for i := 0; i < len(posts); i++ {
-		db.DB.QueryRow("SELECT username FROM users WHERE id = $1", posts[i].UserID).Scan(&username)
+		db.DB.QueryRow("SELECT username FROM users WHERE id = ?", posts[i].UserID).Scan(&username)
 		posts[i].Username = username
 		post2 = append(post2, posts[i])
 	}

@@ -7,3 +7,10 @@ CREATE TABLE
         description TEXT,
         FOREIGN KEY (creator_id) REFERENCES users (id)
     );
+
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS groups;
+
+PRAGMA foreign_keys = ON;

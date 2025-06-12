@@ -9,3 +9,9 @@ CREATE TABLE
         UNIQUE (post_id, user_id)
     );
 
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS postsPrivacy;
+
+PRAGMA foreign_keys = ON;

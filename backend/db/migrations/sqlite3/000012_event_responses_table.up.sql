@@ -10,3 +10,10 @@ CREATE TABLE
         FOREIGN KEY (event_id) REFERENCES events (id),
         UNIQUE (user_id, event_id)
     );
+
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS event_responses;
+
+PRAGMA foreign_keys = ON;

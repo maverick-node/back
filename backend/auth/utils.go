@@ -32,7 +32,7 @@ func Senddata(w http.ResponseWriter, errCode int, mess string, data any) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(httpStatus(errCode)) // Optional: set correct HTTP status
+	w.WriteHeader(httpStatus(errCode))
 	json.NewEncoder(w).Encode(response)
 }
 

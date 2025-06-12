@@ -31,19 +31,16 @@ type Posts struct {
 }
 
 func Post(w http.ResponseWriter, r *http.Request) {
-	// Set CORS headers
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // Allow frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // Allow cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // Allow methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")          // Allow headers
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Handle OPTIONS preflight request
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
 
-	// Handle POST request
 	if r.Method == "POST" {
 		tokene, err := r.Cookie("token")
 		if err != nil {
@@ -58,8 +55,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Parse multipart form
-		err = r.ParseMultipartForm(10 << 20) // 10 MB max memory
+		err = r.ParseMultipartForm(10 << 20)
 		if err != nil {
 			http.Error(w, "Failed to parse form", http.StatusBadRequest)
 			return
@@ -78,7 +74,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Add length validation for title
 		if len(post.Title) < 1 {
 			logger.LogError("Title too short", nil)
 			http.Error(w, "Title must be at least 3 characters long", http.StatusBadRequest)
@@ -91,7 +86,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Add length validation for content
 		if len(post.Content) < 1 {
 			logger.LogError("Content too short", nil)
 			http.Error(w, "Content must be at least 10 characters long", http.StatusBadRequest)
@@ -111,16 +105,15 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		}
 		var postID string
 
-		// Handle image upload
 		file, handler, err := r.FormFile("image")
 		if err == nil && file != nil {
 			defer file.Close()
-			// Check file Size
+
 			if handler.Size > 2*1024*1024 {
 				http.Error(w, "image file too large", http.StatusBadRequest)
 				return
 			}
-			// Check file type
+
 			buff := make([]byte, 512)
 			_, _ = file.Read(buff)
 			contentType := http.DetectContentType(buff)
@@ -138,7 +131,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid image file type", http.StatusBadRequest)
 				return
 			}
-			// Generate new file name: username_timestamp.ext
+
 			ext := filepath.Ext(handler.Filename)
 			safeFilename := fmt.Sprintf("%s_%d%s", post.Image, time.Now().Unix(), ext)
 
@@ -165,14 +158,14 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			post.Image = safeFilename
 		}
 		if strings.ToLower(post.Status) == "public" || strings.ToLower(post.Status) == "private" {
-			// Insert post into the database
+
 			uuidV7, err := uuid.NewV7()
 			if err != nil {
 				http.Error(w, fmt.Sprintf("Error generating UUID: %v", err), http.StatusInternalServerError)
 				return
 			}
 			postID = uuidV7.String()
-			_, err = db.DB.Exec("INSERT INTO posts (id, title, content, user_id, author, creation_date, status,image) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
+			_, err = db.DB.Exec("INSERT INTO posts (id, title, content, user_id, author, creation_date, status,image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 				postID, post.Title, post.Content, userid, author, time.Now(), post.Status, post.Image)
 			if err != nil {
 				fmt.Println("Error inserting post:", err)
@@ -198,7 +191,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			for _, user := range userSlice {
 				postID, _ := uuid.NewV7()
 
-				_, err = db.DB.Exec("INSERT INTO posts (id, title, content, user_id, author, creation_date, status,image) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
+				_, err = db.DB.Exec("INSERT INTO posts (id, title, content, user_id, author, creation_date, status,image) VALUES (?,?,?,?,?,?,?,?)",
 					postID, post.Title, post.Content, userid, author, time.Now(), post.Status, post.Image)
 				if err != nil {
 					http.Error(w, fmt.Sprintf("Error inserting post: %v", err), http.StatusInternalServerError)
@@ -206,7 +199,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 				}
 				privacyID, _ := uuid.NewV7()
 
-				_, err = db.DB.Exec("INSERT INTO posts_privacy (id, post_id, user_id) VALUES ($1, $2, $3)",
+				_, err = db.DB.Exec("INSERT INTO postsPrivacy (id,post_id, user_id) VALUES (?,?, ?)",
 					privacyID, postID, user)
 				if err != nil {
 					http.Error(w, fmt.Sprintf("Error inserting post privacy: %v", err), http.StatusInternalServerError)
@@ -215,7 +208,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		// Return success message
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"message": "Post created successfully"})
 	}

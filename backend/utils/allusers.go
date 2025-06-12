@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
 	"social-net/db"
 	"social-net/session"
 )
@@ -17,10 +18,10 @@ type Userss struct {
 }
 
 func Users(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // Allow your frontend's origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // Allow credentials (cookies)
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // Allowed methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")          // Allowed headers
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
@@ -57,8 +58,8 @@ func Users(w http.ResponseWriter, r *http.Request) {
 				ELSE 0 
 			END as followed
 		FROM users u
-		LEFT JOIN Followers f ON f.followed_id = u.id AND f.follower_id = (SELECT id FROM users WHERE username = $1)
-		WHERE u.username != $2`
+		LEFT JOIN Followers f ON f.followed_id = u.id AND f.follower_id = (SELECT id FROM users WHERE username = ?)
+		WHERE u.username != ?`
 
 	rows, err := db.DB.Query(query, username, username)
 	if err != nil {

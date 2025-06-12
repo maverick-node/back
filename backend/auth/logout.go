@@ -3,35 +3,34 @@ package auth
 import (
 	"encoding/json"
 	"net/http"
+	"time"
+
 	logger "social-net/log"
 	"social-net/session"
-	"time"
 )
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // your frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // important for cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // include all used methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")                         // accept JSON headers, etc.
-	// Retrieve token from cookie
-	cookie, err := r.Cookie("token")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
+	cookie, err := r.Cookie("token")
 	if err != nil {
 		logger.LogError("Unauthorized: No token found", err)
-		// If cookie is not found or error occurs, return unauthorized error
+
 		http.Error(w, "Unauthorized - No token found", http.StatusUnauthorized)
 		return
 	}
 
 	token := cookie.Value
 
-	// Get userID from token
 	userid, ok := session.GetUserIDFromToken(token)
 	if !ok || userid == "" {
 		http.Error(w, "Unauthorized: Invalid token", http.StatusUnauthorized)
 		return
 	}
-	// Delete the session
+
 	err = session.Deletesession(userid)
 	if err != nil {
 		logger.LogError("Failed to delete session", err)
@@ -45,7 +44,6 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		Path:    "/",
 	})
 
-	// Send a successful response
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Logged out successfully",

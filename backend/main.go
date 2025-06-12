@@ -23,15 +23,12 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
 
-	// Initialize database
 	db.Initdb()
 
-	// Auth routes
 	http.HandleFunc("/api/auth/", auth.Auth)
 	http.HandleFunc("/middle", session.Middleware)
 	http.HandleFunc("/api/info", auth.Getinfo)
 
-	// Profile routes
 	http.HandleFunc("/api/userinfo", profile.GetUserInfo)
 	http.HandleFunc("/api/updateprivacy", profile.UpdatePrivacy)
 	http.HandleFunc("/api/setprivacy", profile.UpdatePrivacy)
@@ -44,19 +41,16 @@ func main() {
 	http.HandleFunc("/api/getinvitationsfollow", profile.GetInvitationsFollow)
 	http.HandleFunc("/api/accepteinvi", profile.AcceptInvitation)
 
-	// Posts and comments routes
 	http.HandleFunc("/api/posts", posts.Post)
 	http.HandleFunc("/api/getposts", posts.Getposts)
 	http.HandleFunc("/api/getcomments", comments.Getcomments)
 	http.HandleFunc("/api/addcomments", comments.AddComments)
 
-	// Messages routes
 	http.HandleFunc("/api/getmessages", messages.GetMessages)
 	http.HandleFunc("/api/messages", messages.GetMessages)
 	http.HandleFunc("/ws", messages.Handleconnections)
 	http.HandleFunc("/api/openchat", messages.OpenChat)
 
-	// Groups routes
 	http.HandleFunc("/api/creategroups", groups.CreateGroup)
 	http.HandleFunc("/api/getgroups", groups.GetGroups)
 	http.HandleFunc("/api/addmembertogroup", groups.AddMemberToGroup)
@@ -77,11 +71,9 @@ func main() {
 	http.HandleFunc("/api/user/pendinginvites", groups.GetUserPendingInvitations)
 	http.HandleFunc("/api/groupmembers/status", groups.GetGroupMemberStatuses)
 
-	// Group posts routes
 	http.HandleFunc("/api/groupposts", groups.GetGroupPosts)
 	http.HandleFunc("/api/groupposts/add", groups.AddGroupPost)
 
-	// Events routes
 	http.HandleFunc("/api/postsprv", posts.PostPrivacy)
 	http.HandleFunc("/api/events", events.GetEvents)
 	http.HandleFunc("/api/events/add", events.CreateEvent)
@@ -89,11 +81,9 @@ func main() {
 	http.HandleFunc("/api/markasread", notification.MarkNotificationAsRead)
 	http.HandleFunc("/api/events/join", events.JoinEvent)
 
-	// WebSocket routes
 	http.HandleFunc("/ws/group/", messages.HandleGroupWebSocket)
 	http.HandleFunc("/ws/notifications", notification.HandleNotificationWebSocket)
 
-	// Utils routes
 	http.HandleFunc("/api/allusers", utils.Users)
 	http.HandleFunc("/api/getavatar", auth.GetAvatar)
 

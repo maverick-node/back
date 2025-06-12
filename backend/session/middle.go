@@ -9,10 +9,10 @@ import (
 )
 
 func Middleware(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app") // your frontend origin
-	w.Header().Set("Access-Control-Allow-Credentials", "true")                             // important for cookies
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")                   // include all used methods
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")                         // accept JSON headers, etc.
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	re, err := r.Cookie("token")
 	fmt.Println("Cookie:", re)
 	if err != nil {
@@ -24,7 +24,7 @@ func Middleware(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	var sessionCount int
-	err = db.DB.QueryRow("SELECT COUNT(*) FROM sessions WHERE token=$1", re.Value).Scan(&sessionCount)
+	err = db.DB.QueryRow("SELECT COUNT(*) FROM sessions WHERE token=?", re.Value).Scan(&sessionCount)
 	if err != nil {
 		json.NewEncoder(w).Encode(map[string]string{
 			"message": "Database query failed",
@@ -33,16 +33,14 @@ func Middleware(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if the token exists in the session table
 	if sessionCount > 0 {
-		// Token is valid, return success
+
 		json.NewEncoder(w).Encode(map[string]string{
 			"message": "Login successful",
 		})
 		return
 	}
 
-	// Token not found in the database
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Login failed",
 	})

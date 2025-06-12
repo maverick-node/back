@@ -24,9 +24,8 @@ type GroupComment struct {
 	CreationDate time.Time `json:"creation_date"`
 }
 
-// AddGroupComment handles POST /api/groupcomments/add
 func AddGroupComment(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -39,7 +38,7 @@ func AddGroupComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := r.ParseMultipartForm(10 << 20) // 10MB max
+	err := r.ParseMultipartForm(10 << 20)
 	if err != nil {
 		http.Error(w, "Failed to parse form", http.StatusBadRequest)
 		fmt.Println("Failed to parse form:", err)
@@ -54,7 +53,6 @@ func AddGroupComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Add length validation for comment content
 	if len(commentText) < 1 {
 		http.Error(w, "Comment must be at least 1 character long", http.StatusBadRequest)
 		return
@@ -82,7 +80,6 @@ func AddGroupComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Handle image upload
 	var imageFilename string
 	file, handler, err := r.FormFile("image")
 	if err == nil && handler != nil {
@@ -102,7 +99,7 @@ func AddGroupComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = db.DB.Exec(
-		"INSERT INTO group_comments (id, group_post_id, author, content, image, creation_date) VALUES ($1, $2, $3, $4, $5, $6)",
+		"INSERT INTO group_comments (id, group_post_id, author, content, image, creation_date) VALUES (?, ?, ?, ?, ?, ?)",
 		commentID.String(), postId, username, commentText, imageFilename, time.Now(),
 	)
 	if err != nil {
@@ -113,9 +110,8 @@ func AddGroupComment(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "Group comment created successfully"})
 }
 
-// GetGroupComments handles GET /api/groupcomments?group_post_id=...
 func GetGroupComments(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -142,7 +138,7 @@ func GetGroupComments(w http.ResponseWriter, r *http.Request) {
         SELECT gc.id, gc.group_post_id, gc.author, u.avatar, gc.content, gc.image, gc.creation_date
         FROM group_comments gc
         LEFT JOIN users u ON gc.author = u.username
-        WHERE gc.group_post_id = $1
+        WHERE gc.group_post_id = ?
         ORDER BY gc.creation_date DESC
     `, groupPostID)
 	if err != nil {

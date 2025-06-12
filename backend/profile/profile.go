@@ -27,7 +27,7 @@ type UserInfo struct {
 	PostsCount         int      `json:"posts"`
 	Avatar             string   `json:"avatar"`
 	Nickname           string   `json:"nickname"`
-	FollowStatus       string   `json:"follow_status"` // Added follow status
+	FollowStatus       string   `json:"follow_status"`
 }
 
 type GetPost struct {
@@ -52,7 +52,7 @@ type Comments struct {
 }
 
 func GetUserInfo(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -79,9 +79,8 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// First, get the user's ID from the username
 	var userID string
-	err1 := db.DB.QueryRow("SELECT id FROM users WHERE username = $1", username).Scan(&userID)
+	err1 := db.DB.QueryRow("SELECT id FROM users WHERE username = ?", username).Scan(&userID)
 	if err1 != nil {
 		if err1 == sql.ErrNoRows {
 			fmt.Println("No user found with the given username")
@@ -94,7 +93,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userInfo UserInfo
-	err = db.DB.QueryRow("SELECT username, email, first_name, last_name, bio, date_of_birth, privacy, avatar, nickname FROM users WHERE id = $1", userID).Scan(
+	err = db.DB.QueryRow("SELECT username, email, first_name, last_name, bio, date_of_birth, privacy, avatar, nickname FROM users WHERE id = ?", userID).Scan(
 		&userInfo.Username, &userInfo.Email, &userInfo.FirstName, &userInfo.LastName, &userInfo.Bio, &userInfo.DateOfBirth, &userInfo.Privacy, &userInfo.Avatar, &userInfo.Nickname)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -106,14 +105,14 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error fetching user info", http.StatusInternalServerError)
 		return
 	}
-	// Check if the current user is following the profile user
+
 	query := `
-		SELECT status FROM followers WHERE follower_id = $1 AND followed_id = $2`
+		SELECT status FROM followers WHERE follower_id = ? AND followed_id = ?`
 	var followStatus string
 	err = db.DB.QueryRow(query, user_id, userID).Scan(&followStatus)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			followStatus = "not_following" // User is not following
+			followStatus = "not_following"
 		} else {
 			logger.LogError("Error checking follow status", err)
 			http.Error(w, "Error checking follow status", http.StatusInternalServerError)
@@ -150,7 +149,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var postCount int
-	err = db.DB.QueryRow("SELECT COUNT(*) FROM posts WHERE user_id = $1", userID).Scan(&postCount)
+	err = db.DB.QueryRow("SELECT COUNT(*) FROM posts WHERE user_id = ?", userID).Scan(&postCount)
 	if err != nil {
 		logger.LogError("Error counting posts", err)
 		http.Error(w, "Error getting post count", http.StatusInternalServerError)
@@ -168,7 +167,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePrivacy(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -178,11 +177,10 @@ func UpdatePrivacy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Parse the request body
 	var request struct {
 		Privacy string `json:"privacy"`
 	}
-	// Get the user ID from the session
+
 	token, err := r.Cookie("token")
 	fmt.Println("TokenVAlue:", token.Value)
 	fmt.Println("Token:", token)
@@ -195,13 +193,12 @@ func UpdatePrivacy(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unauthorized: Invalid token", http.StatusUnauthorized)
 		return
 	}
-	// Decode the request body
+
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	// Validate the privacy value
 	if request.Privacy != "public" && request.Privacy != "private" {
 		http.Error(w, "Invalid privacy value", http.StatusBadRequest)
 		return
@@ -213,22 +210,30 @@ func UpdatePrivacy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update the privacy setting in the database
-	_, err = db.DB.Exec("UPDATE users SET privacy = $1 WHERE username = $2", request.Privacy, username)
+	_, err = db.DB.Exec("UPDATE users SET privacy = ? WHERE username = ?", request.Privacy, username)
 	if err != nil {
 		logger.LogError("Failed to update privacy", err)
 		http.Error(w, "Failed to update privacy", http.StatusInternalServerError)
 		return
 	}
 
-	// Respond with success
+	if request.Privacy == "public" {
+
+		_, err = db.DB.Exec("UPDATE followers SET status = 'accepted' WHERE followed_id = (SELECT id FROM users WHERE username = ?) AND status = 'pending'", username)
+		if err != nil {
+			logger.LogError("Failed to accept pending follow requests", err)
+			http.Error(w, "Failed to accept pending follow requests", http.StatusInternalServerError)
+			return
+		}
+	}
+
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "success"})
 }
 
 func GetFollowersCount(userID string) (int, error) {
 	var count int
-	err := db.DB.QueryRow("SELECT COUNT(*) FROM followers WHERE followed_id = $1 AND status = 'accepted'", userID).Scan(&count)
+	err := db.DB.QueryRow("SELECT COUNT(*) FROM followers WHERE followed_id = ? AND status = 'accepted'", userID).Scan(&count)
 	if err != nil {
 		return 0, err
 	}
@@ -237,7 +242,7 @@ func GetFollowersCount(userID string) (int, error) {
 
 func GetFollowingCount(userID string) (int, error) {
 	var count int
-	err := db.DB.QueryRow("SELECT COUNT(*) FROM followers WHERE follower_id = $1 AND status = 'accepted'", userID).Scan(&count)
+	err := db.DB.QueryRow("SELECT COUNT(*) FROM followers WHERE follower_id = ? AND status = 'accepted'", userID).Scan(&count)
 	if err != nil {
 		return 0, err
 	}
@@ -249,7 +254,7 @@ func GetFollowerUsernames(userID string) ([]string, error) {
 		SELECT u.username 
 		FROM users u 
 		JOIN followers f ON u.id = f.follower_id 
-		WHERE f.followed_id = $1 AND f.status = 'accepted'`, userID)
+		WHERE f.followed_id = ? AND f.status = 'accepted'`, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -271,7 +276,7 @@ func GetFollowingUsernames(userID string) ([]string, error) {
 		SELECT u.username 
 		FROM users u 
 		JOIN followers f ON u.id = f.followed_id 
-		WHERE f.follower_id = $1 AND f.status = 'accepted'`, userID)
+		WHERE f.follower_id = ? AND f.status = 'accepted'`, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -289,7 +294,7 @@ func GetFollowingUsernames(userID string) ([]string, error) {
 }
 
 func IsFollowing(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -321,32 +326,29 @@ func IsFollowing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get the user IDs from the usernames
 	var followerID, followedID string
-	err = db.DB.QueryRow("SELECT id FROM users WHERE username = $1", followerUsername).Scan(&followerID)
+	err = db.DB.QueryRow("SELECT id FROM users WHERE username = ?", followerUsername).Scan(&followerID)
 	if err != nil {
 		http.Error(w, "Error finding follower user", http.StatusInternalServerError)
 		return
 	}
 
-	err = db.DB.QueryRow("SELECT id FROM users WHERE username = $1", followedUsername).Scan(&followedID)
+	err = db.DB.QueryRow("SELECT id FROM users WHERE username = ?", followedUsername).Scan(&followedID)
 	if err != nil {
 		http.Error(w, "Error finding followed user", http.StatusInternalServerError)
 		return
 	}
 
-	// Check if the follower is following the followed user
 	var exists bool
 	err = db.DB.QueryRow(`SELECT EXISTS(
         SELECT 1 FROM followers 
-        WHERE follower_id = $1 AND followed_id = $2 AND status = 'accepted'
+        WHERE follower_id = ? AND followed_id = ? AND status = 'accepted'
     )`, followerID, followedID).Scan(&exists)
 	if err != nil {
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 
-	// Return the result
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]bool{"isFollowing": exists})
 }
@@ -354,15 +356,14 @@ func IsFollowing(w http.ResponseWriter, r *http.Request) {
 func IsAcceptedFollower(viewerID, ownerID string) (bool, error) {
 	var exists bool
 	err := db.DB.QueryRow(
-		"SELECT EXISTS(SELECT 1 FROM followers WHERE follower_id = $1 AND followed_id = $2 AND status = 'accepted')",
+		"SELECT EXISTS(SELECT 1 FROM followers WHERE follower_id = ? AND followed_id = ? AND status = 'accepted')",
 		viewerID, ownerID,
 	).Scan(&exists)
 	return exists, err
 }
 
-// In getposts.go
 func GetOwnPosts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -391,7 +392,7 @@ func GetOwnPosts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var userID string
-	err := db.DB.QueryRow("SELECT id FROM users WHERE username = $1", username).Scan(&userID)
+	err := db.DB.QueryRow("SELECT id FROM users WHERE username = ?", username).Scan(&userID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("No user found with the given username")
@@ -405,16 +406,16 @@ func GetOwnPosts(w http.ResponseWriter, r *http.Request) {
 	query := `
 		SELECT DISTINCT p.id, p.user_id, p.author, p.content, p.title, p.creation_date, p.status, u.avatar, p.image
 		FROM posts p
-		LEFT JOIN posts_privacy pp ON p.id = pp.post_id
+		LEFT JOIN postsPrivacy pp ON p.id = pp.post_id
 		LEFT JOIN users u ON p.user_id = u.id
-		WHERE p.user_id = $1
+		WHERE p.user_id = ?
   		AND (
     	p.status = 'public'
     	OR (p.status = 'private' AND EXISTS (
-        SELECT 1 FROM followers WHERE follower_id = $2 AND followed_id = $3 AND status = 'accepted'
+        SELECT 1 FROM followers WHERE follower_id = ? AND followed_id = ? AND status = 'accepted'
     	))
-    	OR (p.status = 'semi-private' AND pp.user_id = $4)
-    	OR ($5 = p.user_id)
+    	OR (p.status = 'semi-private' AND pp.user_id = ?)
+    	OR (? = p.user_id)
   )
 ORDER BY p.creation_date DESC
 	`
@@ -437,9 +438,9 @@ ORDER BY p.creation_date DESC
 	}
 
 	for i, post := range posts {
-		// Get the comments count for each post
+
 		var commentsCount int
-		err := db.DB.QueryRow("SELECT COUNT(*) FROM comments WHERE post_id = $1", post.Id).Scan(&commentsCount)
+		err := db.DB.QueryRow("SELECT COUNT(*) FROM comments WHERE post_id = ?", post.Id).Scan(&commentsCount)
 		if err != nil {
 			fmt.Println("Error getting comments count:", err)
 			http.Error(w, "Error getting comments count", http.StatusInternalServerError)
@@ -447,25 +448,23 @@ ORDER BY p.creation_date DESC
 		}
 		posts[i].CommentsCount = commentsCount
 	}
-	// Always return JSON (even if empty)
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(posts)
 }
 
 func GetFollowersAndFollowing(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Get the profile user from query parameter
 	profileUser := r.URL.Query().Get("profileUser")
 	if profileUser == "" {
 		http.Error(w, "Profile user is required", http.StatusBadRequest)
 		return
 	}
 
-	// Get the current user from session
 	token, err := r.Cookie("token")
 	if err != nil {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
@@ -479,7 +478,6 @@ func GetFollowersAndFollowing(w http.ResponseWriter, r *http.Request) {
 	}
 	currentUser, _ := session.GetUsernameFromUserID(userID)
 
-	// Query to get followers
 	followersQuery := `
         SELECT follower_id
         FROM followers
@@ -500,12 +498,11 @@ func GetFollowersAndFollowing(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			continue
 		}
-		// Get username from user ID
+
 		username, _ := session.GetUsernameFromUserID(userID)
 		followers = append(followers, username)
 	}
 
-	// Query to get following
 	followingQuery := `
         SELECT followed_id
         FROM followers
@@ -526,37 +523,27 @@ func GetFollowersAndFollowing(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			continue
 		}
-		// Get username from user ID
+
 		username, _ := session.GetUsernameFromUserID(followingID)
 		following = append(following, username)
 	}
 
-	// Prepare response
 	response := map[string]interface{}{
 		"followers":      followers,
 		"following":      following,
 		"is_own_profile": currentUser == profileUser,
 	}
 
-	// Send response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
 
 func GetFollowersAndFollowingPosts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Get the profile user from query parameter
-	// profileUser := r.URL.Query().Get("profileUser")
-	// if profileUser == "" {
-	// 	http.Error(w, "Profile user is required", http.StatusBadRequest)
-	// 	return
-	// }
-
-	// Get the current user from session
 	token, _ := r.Cookie("token")
 	tokenValue := token.Value
 	userID, ok := session.GetUserIDFromToken(tokenValue)
@@ -564,13 +551,11 @@ func GetFollowersAndFollowingPosts(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unauthorized: Invalid token", http.StatusUnauthorized)
 		return
 	}
-	// currentUser, _ := session.Getusernamefromuserid(userID)
 
-	// Query to get followers
 	followersQuery := `
 		SELECT follower_id
 		FROM followers
-		WHERE followed_id = $1 and status = 'accepted'
+		WHERE followed_id = ? and status = 'accepted'
     `
 	followersRows, err := db.DB.Query(followersQuery, userID)
 	if err != nil {
@@ -588,12 +573,11 @@ func GetFollowersAndFollowingPosts(w http.ResponseWriter, r *http.Request) {
 			logger.LogError("Error scanning follower ID", err)
 			continue
 		}
-		// Get username from user ID
+
 		username, _ := session.GetUsernameFromUserID(followerID)
 		followers = append(followers, username)
 	}
 
-	// Query to get following
 	followingQuery := `
         SELECT followed_id
         FROM followers
@@ -616,24 +600,22 @@ func GetFollowersAndFollowingPosts(w http.ResponseWriter, r *http.Request) {
 			logger.LogError("Error scanning following ID", err)
 			continue
 		}
-		// Get username from user ID
+
 		username, _ := session.GetUsernameFromUserID(followingID)
 		following = append(following, username)
 	}
 
-	// Prepare response
 	response := map[string]interface{}{
 		"followers": followers,
 		"following": following,
 	}
 
-	// Send response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
 
 func CheckMyPrivacy(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -646,7 +628,7 @@ func CheckMyPrivacy(w http.ResponseWriter, r *http.Request) {
 	}
 	username, _ := session.GetUsernameFromUserID(username1)
 
-	row := db.DB.QueryRow(`SELECT privacy FROM users WHERE username=$1`, username)
+	row := db.DB.QueryRow(`SELECT privacy FROM users WHERE username=?`, username)
 	var privacy string
 	err := row.Scan(&privacy)
 	if err != nil {
@@ -659,12 +641,11 @@ func CheckMyPrivacy(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetInvitationsFollow(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Get the user ID from the request context
 	token, _ := r.Cookie("token")
 	tokenValue := token.Value
 	userID, ok := session.GetUserIDFromToken(tokenValue)
@@ -673,8 +654,7 @@ func GetInvitationsFollow(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Fetch the invitations from the database
-	rows, err := db.DB.Query("SELECT follower_id FROM Followers WHERE followed_id = $1 AND status = 'pending'", userID)
+	rows, err := db.DB.Query("SELECT follower_id FROM Followers WHERE followed_id = ? AND status = 'pending'", userID)
 	if err != nil {
 		fmt.Println("Error fetching invitations:", err)
 		http.Error(w, "Failed to fetch invitations", http.StatusInternalServerError)
@@ -698,8 +678,7 @@ func GetInvitationsFollow(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Fetch the username for the follower ID
-		err = db.DB.QueryRow("SELECT username FROM users WHERE id = $1", invitation.FollowerID).Scan(&invitation.Username)
+		err = db.DB.QueryRow("SELECT username FROM users WHERE id = ?", invitation.FollowerID).Scan(&invitation.Username)
 		if err != nil {
 			fmt.Println("Error fetching username:", err)
 			http.Error(w, "Failed to fetch username", http.StatusInternalServerError)
@@ -711,18 +690,16 @@ func GetInvitationsFollow(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("invitations", invitations)
 
-	// Return the result
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(invitations)
 }
 
 func AcceptInvitation(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Get the user ID from the request context
 	token, _ := r.Cookie("token")
 	tokenValue := token.Value
 	userID, ok := session.GetUserIDFromToken(tokenValue)
@@ -731,7 +708,6 @@ func AcceptInvitation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get the follower ID from the request body
 	var data struct {
 		FollowerID string `json:"follower_id"`
 	}
@@ -745,15 +721,13 @@ func AcceptInvitation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update the status in the database
-	_, err = db.DB.Exec("UPDATE Followers SET status = 'accepted' WHERE follower_id = $1 AND followed_id = $2", follower_id, userID)
+	_, err = db.DB.Exec("UPDATE Followers SET status = 'accepted' WHERE follower_id = ? AND followed_id = ?", follower_id, userID)
 	if err != nil {
 		fmt.Println("Error updating invitation status:", err)
 		http.Error(w, "Failed to update invitation status", http.StatusInternalServerError)
 		return
 	}
 
-	// Return success response
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "success"})
 }

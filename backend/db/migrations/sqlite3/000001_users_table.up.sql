@@ -1,5 +1,6 @@
 -- +migrate Up
 PRAGMA foreign_keys = ON;
+
 CREATE TABLE
     IF NOT EXISTS users (
         id TEXT PRIMARY KEY NOT NULL,
@@ -14,3 +15,10 @@ CREATE TABLE
         privacy TEXT NOT NULL DEFAULT 'public',
         avatar TEXT DEFAULT ''
     );
+
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS users;
+
+PRAGMA foreign_keys = ON;

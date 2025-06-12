@@ -11,3 +11,10 @@ CREATE TABLE
         status TEXT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users (id)
     );
+
+-- +migrate Down
+PRAGMA foreign_keys = OFF;
+
+DROP TABLE IF EXISTS posts;
+
+PRAGMA foreign_keys = ON;

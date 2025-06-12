@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"social-net/db"
-	"social-net/notification"
-	"social-net/session"
 	"strconv"
 	"strings"
 	"time"
+
+	"social-net/db"
+	"social-net/notification"
+	"social-net/session"
 
 	"github.com/gofrs/uuid"
 )
@@ -22,7 +23,7 @@ type Event struct {
 	Description   string `json:"description"`
 	Date          string `json:"date"`
 	Location      string `json:"location"`
-	Response      *int   `json:"response"` // can be nil, 1, or -1
+	Response      *int   `json:"response"`
 	GoingCount    int    `json:"going_count"`
 	NotGoingCount int    `json:"not_going_count"`
 }
@@ -48,10 +49,9 @@ type EventResponse struct {
 }
 
 func validateEventDate(dateStr string) error {
-	// Parse the date string
 	eventDate, err := time.Parse(time.RFC3339, dateStr)
 	if err != nil {
-		// Try parsing with different format if RFC3339 fails
+
 		eventDate, err = time.Parse("2006-01-02T15:04", dateStr)
 		if err != nil {
 			return fmt.Errorf("invalid date format: must be RFC3339 or YYYY-MM-DDThh:mm")
@@ -59,7 +59,7 @@ func validateEventDate(dateStr string) error {
 	}
 
 	now := time.Now()
-	maxDate := now.AddDate(2, 0, 0) // 2 years from now
+	maxDate := now.AddDate(2, 0, 0)
 
 	if eventDate.Before(now) {
 		return fmt.Errorf("event date cannot be in the past")
@@ -73,14 +73,12 @@ func validateEventDate(dateStr string) error {
 }
 
 func sanitizeInput(input string) string {
-	// Remove any potential harmful characters and trim spaces
 	sanitized := strings.TrimSpace(input)
 	return sanitized
 }
 
 func CreateEvent(w http.ResponseWriter, r *http.Request) {
-	// CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -173,7 +171,6 @@ func CreateEvent(w http.ResponseWriter, r *http.Request) {
 	}
 	event.ID = eventID.String()
 
-	// Insert event
 	query := `
 		INSERT INTO events (id, creator_id, group_id, title, description, event_datetime, location)
 		VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
@@ -185,7 +182,6 @@ func CreateEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create initial response for creator
 	responseID, err := uuid.NewV7()
 	if err != nil {
 		log.Println("Error generating response UUID:", err)
@@ -202,9 +198,7 @@ func CreateEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Start goroutine to create notifications for all group members
 	go func() {
-		// Get all group members except the creator
 		rows, err := db.DB.Query(`
 			SELECT user_id 
 			FROM group_members 
@@ -214,7 +208,7 @@ func CreateEvent(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer rows.Close()
-		// Create notification for each member
+
 		userName, ok := session.GetUsernameFromUserID(userID)
 		if !ok {
 			log.Printf("Error getting username for user ID %s\n", userID)
@@ -235,7 +229,6 @@ func CreateEvent(w http.ResponseWriter, r *http.Request) {
 		for _, member := range members {
 			notification.CreateNotificationMessage(member, userName, "Event", "Event: "+event.Title+" has been created in your group.")
 		}
-
 	}()
 
 	w.Header().Set("Content-Type", "application/json")
@@ -243,8 +236,7 @@ func CreateEvent(w http.ResponseWriter, r *http.Request) {
 }
 
 func JoinEvent(w http.ResponseWriter, r *http.Request) {
-	// CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -258,7 +250,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Parse event_id
 	eventID := r.URL.Query().Get("event_id")
 	if eventID == "" {
 		log.Println("Missing event_id")
@@ -266,7 +257,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Parse and validate response option
 	optionStr := r.URL.Query().Get("response")
 	option, err := strconv.Atoi(optionStr)
 	if err != nil || (option != ResponseGoing && option != ResponseNotGoing) {
@@ -275,7 +265,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Auth
 	cookie, err := r.Cookie("token")
 	if err != nil {
 		http.Error(w, "Unauthorized: missing token", http.StatusUnauthorized)
@@ -287,16 +276,14 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Start transaction
 	tx, err := db.DB.Begin()
 	if err != nil {
 		log.Println("Error starting transaction:", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	defer tx.Rollback() // Will be ignored if transaction is committed
+	defer tx.Rollback()
 
-	// Check if event exists and get group_id
 	var groupID string
 	err = tx.QueryRow("SELECT group_id FROM events WHERE id = $1", eventID).Scan(&groupID)
 	if err != nil {
@@ -310,7 +297,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check group membership
 	var isMember bool
 	err = tx.QueryRow("SELECT EXISTS(SELECT 1 FROM group_members WHERE user_id = $1 AND group_id = $2)",
 		userID, groupID).Scan(&isMember)
@@ -324,7 +310,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if event is in the past
 	var eventDate time.Time
 	err = tx.QueryRow("SELECT event_datetime FROM events WHERE id = $1", eventID).Scan(&eventDate)
 	if err != nil {
@@ -338,7 +323,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Insert or update response
 	responseID, err := uuid.NewV7()
 	if err != nil {
 		log.Println("Error generating UUID:", err)
@@ -361,7 +345,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get updated response counts
 	var goingCount, notGoingCount int
 	err = tx.QueryRow(`
 		SELECT 
@@ -376,14 +359,12 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Commit transaction
 	if err := tx.Commit(); err != nil {
 		log.Printf("Error committing transaction: %v\n", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	// Return response with counts
 	response := EventResponse{
 		ID:            responseRecordID,
 		EventID:       eventID,
@@ -397,8 +378,7 @@ func JoinEvent(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetEvents(w http.ResponseWriter, r *http.Request) {
-	// CORS
-	w.Header().Set("Access-Control-Allow-Origin", "https://frontend-social-so.vercel.app")
+	w.Header().Set("Access-Control-Allow-Origin", "https://white-pebble-0a50c5603.6.azurestaticapps.net")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -444,8 +424,8 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		(SELECT COUNT(*) FROM event_responses WHERE event_id = e.id AND option = -1) as not_going_count
 	FROM events e
 	LEFT JOIN event_responses er 
-		ON e.id = er.event_id AND er.user_id = $1
-	WHERE e.group_id = $2
+		ON e.id = er.event_id AND er.user_id = ?
+	WHERE e.group_id = ?
 	ORDER BY e.event_datetime ASC
 	`
 	rows, err := db.DB.Query(query, userID, groupID)
