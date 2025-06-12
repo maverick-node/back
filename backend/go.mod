@@ -10,4 +10,4 @@ require (
 	golang.org/x/crypto v0.38.0
 )
 
-require github.com/go-gorp/gorp/v3 v3.1.0
+require github.com/go-gorp/gorp/v3 v3.1.0 // indirect

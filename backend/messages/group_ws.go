@@ -22,7 +22,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 		CheckOrigin: func(r *http.Request) bool {
-			return r.Header.Get("Origin") == "https://white-pebble-0a50c5603.6.azurestaticapps.net"
+			return r.Header.Get("Origin") == "https://happy-mushroom-01036131e.6.azurestaticapps.net"
 		},
 	}
 
