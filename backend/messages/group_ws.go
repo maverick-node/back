@@ -22,7 +22,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 		CheckOrigin: func(r *http.Request) bool {
-			return r.Header.Get("Origin") == "http://20.56.138.63:8081"
+			return r.Header.Get("Origin") == "http://social-net.duckdns.org"
 		},
 	}
 

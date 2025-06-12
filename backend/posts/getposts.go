@@ -23,7 +23,7 @@ type GetPost struct {
 }
 
 func Getposts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "http://20.56.138.63:8081")
+	w.Header().Set("Access-Control-Allow-Origin", "http://social-net.duckdns.org")
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
