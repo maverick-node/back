@@ -1,8 +1,11 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"social-net/auth"
 	"social-net/comments"
@@ -87,5 +90,20 @@ func main() {
 	http.HandleFunc("/api/allusers", utils.Users)
 	http.HandleFunc("/api/getavatar", auth.GetAvatar)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	go func() {
+		err := http.ListenAndServe(":8080", nil)
+		if err != nil {
+
+			db.DB.Close()
+			os.Exit(1)
+		}
+	}()
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+
+	sig := <-sigChan
+	fmt.Println("signal err:", sig)
+	db.DB.Close()
+
 }
